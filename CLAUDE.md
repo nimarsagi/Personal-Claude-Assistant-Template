@@ -1,0 +1,60 @@
+# My Claude Assistant — Boot Protocol
+
+This folder (~/my-claude-assistant/) is the source of truth for persistent
+memory, journal, and user-model context. Read this file at the start of
+every Claude Code session, in any project.
+
+## Boot sequence
+a. If SETUP.md exists in this folder, run it first (see SETUP.md — it
+   removes itself when done).
+b. Read USER.md and memory/MEMORY.md in full.
+c. If memory/proposals/ contains any files, mention them in one line
+   (pending proposals awaiting review) — do not act on them unprompted.
+d. Do NOT read journal files at boot. Journal history loads on demand only
+   (see "Reading journals" below).
+
+## Logging a session (user-triggered)
+When the user says "log this session" (or equivalent): determine the
+project from working directory / session content, and append outcomes,
+decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
+- A new project name creates a new subfolder on first use.
+- No clear project → memory/journal/general/.
+- A session touching two projects → ask in one line which to file under
+  (or split the entry, writing only the relevant material to each).
+  Never silently guess on a write.
+
+## Reading journals (on demand)
+Pull journal history when the user asks a continuity question ("where did
+we leave off", "what did we decide about X", "catch me up on <project>")
+or when the task clearly depends on prior decisions in a known project.
+- Determine the project the same way as at write time.
+- Read only that project's folder, most recent entries first, capped at
+  the last 5 entries or 14 days (whichever is less) unless asked for more.
+- No clear project (e.g. an unrelated folder): find the journal folder
+  with the most recently modified entry, answer from it, and name which
+  folder you read in one line. Do not block on a clarifying question.
+- Never read across all project folders unless explicitly asked.
+
+## Lesson capture (user-triggered)
+When the user says "remember this" / "capture that lesson", or corrects
+Claude and asks to keep it: distill it to a one-line rule, classify it:
+- GLOBAL (about the user — preferences, working style, standing
+  decisions, true across all projects) → propose an addition to USER.md
+  or memory/MEMORY.md in this folder.
+- LOCAL (about one workflow/project — conventions, paths, domain rules)
+  → propose an addition to that project's own CLAUDE.md/CONTEXT.md, never
+  this folder's memory.
+- When unsure, propose LOCAL.
+Show the exact proposed text and destination; write only on explicit
+approval. Do not capture lessons unprompted.
+
+## Standing rules
+- Approval gates on memory writes, not on action: background/autonomous
+  work is fine, but nothing is written into USER.md, MEMORY.md, or a
+  project's own memory files without the user's explicit yes.
+- MEMORY.md and USER.md hold GLOBAL facts only, purpose-not-inventory,
+  under half a page each. Project-specific rules never belong here.
+- Nothing programmatic ever edits this file or ~/.claude/ control files.
+
+See ROADMAP.md for the full phase plan (this is Phase 0–1: manual
+logging and lesson capture; no hooks or skills installed yet).

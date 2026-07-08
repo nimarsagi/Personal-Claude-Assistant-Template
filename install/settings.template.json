@@ -1,0 +1,4 @@
+{
+  "_comment": "Placeholder for the Phase 2 SessionEnd hook config. Inert — not active until a future install step merges it into ~/.claude/settings.json. No hooks are installed in Phase 0-1.",
+  "hooks": {}
+}
