@@ -4,6 +4,23 @@ This folder (~/my-claude-assistant/) is the source of truth for persistent
 memory, journal, and user-model context. Read this file at the start of
 every Claude Code session, in any project.
 
+## Where things live
+- `USER.md` — who the user is: role, working style, standing
+  preferences, recurring projects, goals. Read in full at boot.
+- `memory/MEMORY.md` — curated GLOBAL facts, feedback, and references
+  that hold across every project. Read in full at boot.
+- `memory/journal/<project>/YYYY-MM-DD.md` — per-project session
+  history. NOT read at boot; pulled on demand (see "Reading journals").
+- `memory/proposals/` — machine-proposed journal entries/lessons
+  awaiting approval (Phase 2+). Existence checked at boot; contents
+  read only when the user reviews them.
+- `ROADMAP.md` — the full phase plan; read only when phase status or
+  design intent is in question.
+- `SETUP.md` — first-run personalization; present only until it
+  completes and deletes itself.
+- `install/` — inert templates (hook config, skill sources); not
+  live until a future install step wires them into ~/.claude/.
+
 ## Boot sequence
 a. If SETUP.md exists in this folder, run it first (see SETUP.md — it
    removes itself when done).
