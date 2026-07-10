@@ -1,7 +1,7 @@
 # My Claude Assistant — Boot Protocol
 
 This folder is the source of truth for persistent memory, journal, and
-user-model context. Once installed (default path: ~/my-claude-assistant/),
+user-model context. Once installed (default: ~/my-claude-assistant/),
 read this file at the start of every Claude Code session, in any project.
 
 ## Guard — check before anything else
@@ -10,29 +10,21 @@ This protocol is LIVE only if this folder is the exact path named in the
 If that block is missing or names a different path, this is a source/dev
 checkout, not the live assistant: do NOT run SETUP.md, do NOT write to
 memory/ or journal files here, do NOT delete anything. Say so in one line
-and point the user at README.md for install instructions.
+and point the user at README.md.
 
 ## Where things live
-- `USER.md` — who the user is: role, working style, standing
-  preferences, recurring projects, goals. Read in full at boot.
+- `USER.md` — who the user is: role, working style, standing preferences,
+  recurring projects, goals. Read in full at boot.
 - `memory/MEMORY.md` — curated GLOBAL facts, feedback, and references
   that hold across every project. Read in full at boot.
-- `memory/journal/<project>/YYYY-MM-DD.md` — per-project session
-  history. NOT read at boot; pulled on demand (see "Reading journals").
-- `memory/proposals/` — machine-proposed journal entries/lessons
-  awaiting approval (Phase 2+). Existence checked at boot; contents
-  read only when the user reviews them.
-- `ROADMAP.md` — the full phase plan; read only when phase status or
-  design intent is in question.
-- `INSTALL.md` — one-time step that wires this folder into
-  ~/.claude/CLAUDE.md so it loads in every session, any folder. Separate
-  from SETUP.md and gated more strictly: it is the only step that edits
-  a file outside this folder. Run once when the folder is first placed
-  at its permanent path; does not delete itself.
-- `SETUP.md` — first-run personalization; present only until it
-  completes and deletes itself.
-- `install/` — inert templates (hook config, skill sources); not
-  live until a future install step wires them into ~/.claude/.
+- `memory/journal/<project>/YYYY-MM-DD.md` — per-project session history;
+  on demand only (see "Reading journals").
+- `memory/proposals/` — machine-proposed entries awaiting approval
+  (Phase 2+); existence checked at boot, contents read only on review.
+- `ROADMAP.md` — phase plan; read only when phase status or design intent
+  is in question. This is Phase 0–1: manual logging and lesson capture.
+- `INSTALL.md` / `SETUP.md` / `install/` — install-time only; each
+  explains itself. SETUP.md deletes itself when first-run setup is done.
 
 ## Boot sequence
 a. If SETUP.md exists in this folder, first-run setup is still pending
@@ -43,8 +35,8 @@ a. If SETUP.md exists in this folder, first-run setup is still pending
 b. Read USER.md and memory/MEMORY.md in full.
 c. If memory/proposals/ contains any files, mention them in one line
    (pending proposals awaiting review) — do not act on them unprompted.
-d. Do NOT read journal files at boot. Journal history loads on demand only
-   (see "Reading journals" below).
+d. Do NOT read journal files at boot; they load on demand only (see
+   "Reading journals").
 
 ## Logging a session (user-triggered)
 When the user says "log this session" (or equivalent): determine the
@@ -81,8 +73,8 @@ Claude and asks to keep it: distill it to a one-line rule, classify it:
   this folder's memory. If the project has neither file, propose creating
   CLAUDE.md at its root with just this rule.
 - When unsure, propose LOCAL.
-Show the exact proposed text and destination; write only on explicit
-approval. Do not capture lessons unprompted.
+Show the exact proposed text and destination. Do not capture lessons
+unprompted.
 
 ## Standing rules
 - Approval gates on memory writes, not on action: background/autonomous
@@ -91,6 +83,3 @@ approval. Do not capture lessons unprompted.
 - MEMORY.md and USER.md hold GLOBAL facts only, purpose-not-inventory,
   max 25 lines each. Project-specific rules never belong here.
 - Nothing programmatic ever edits this file or ~/.claude/ control files.
-
-See ROADMAP.md for the full phase plan (this is Phase 0–1: manual
-logging and lesson capture; no hooks or skills installed yet).
