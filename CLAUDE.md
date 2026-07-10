@@ -1,8 +1,16 @@
 # My Claude Assistant — Boot Protocol
 
-This folder (~/my-claude-assistant/) is the source of truth for persistent
-memory, journal, and user-model context. Read this file at the start of
-every Claude Code session, in any project.
+This folder is the source of truth for persistent memory, journal, and
+user-model context. Once installed (default path: ~/my-claude-assistant/),
+read this file at the start of every Claude Code session, in any project.
+
+## Guard — check before anything else
+This protocol is LIVE only if this folder is the exact path named in the
+`<!-- my-claude-assistant:start -->` pointer block of ~/.claude/CLAUDE.md.
+If that block is missing or names a different path, this is a source/dev
+checkout, not the live assistant: do NOT run SETUP.md, do NOT write to
+memory/ or journal files here, do NOT delete anything. Say so in one line
+and point the user at README.md for install instructions.
 
 ## Where things live
 - `USER.md` — who the user is: role, working style, standing
