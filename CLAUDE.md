@@ -32,7 +32,11 @@ a. If SETUP.md exists in this folder, first-run setup is still pending
    setup itself or an empty prompt, run it now. If they open with a real
    question or task, answer that first, then offer to run setup — never
    block the user's actual request behind the interview.
-b. Read USER.md and memory/MEMORY.md in full.
+b. Read USER.md and memory/MEMORY.md in full. If USER.md still contains
+   only its empty headers AND SETUP.md is gone, setup was skipped or its
+   file was deleted early — tell the user in one line (SETUP.md can be
+   restored with `git checkout SETUP.md`); don't just proceed as if
+   setup were done.
 c. If memory/proposals/ contains any files, mention them in one line
    (pending proposals awaiting review) — do not act on them unprompted.
 d. Do NOT read journal files at boot; they load on demand only (see
