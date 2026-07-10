@@ -1,8 +1,8 @@
 # My Claude Assistant — Boot Protocol
 
 This folder is the source of truth for persistent memory, journal, and
-user-model context. Once installed (default: ~/my-claude-assistant/),
-read this file at the start of every Claude Code session, in any project.
+user-model context. Once installed, read this file at the start of every
+Claude Code session, in any project.
 
 ## Guard — check before anything else
 This protocol is LIVE only if this folder is the exact path named in the

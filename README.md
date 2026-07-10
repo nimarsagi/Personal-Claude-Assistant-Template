@@ -14,11 +14,15 @@ The clone IS the install: this checkout becomes the live assistant, and
 git versions your memory over time. Keep the repo private — it will hold
 personal data.
 
-1. Put this folder at its permanent path. Default (all docs assume it):
+1. Put this folder at whatever permanent path and name you want — there's
+   no required location:
 
    ```
-   git clone <this-repo> ~/my-claude-assistant
+   git clone <this-repo> ~/<name-of-your-choosing>
    ```
+
+   INSTALL.md (next step) reads back the actual path you chose; it never
+   assumes a fixed one.
 
 2. Open a Claude Code session **inside that folder** and say:
    **"Run INSTALL.md."** Claude will show you the exact pointer block it
