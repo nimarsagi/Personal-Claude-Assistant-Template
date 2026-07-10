@@ -16,6 +16,11 @@ every Claude Code session, in any project.
   read only when the user reviews them.
 - `ROADMAP.md` — the full phase plan; read only when phase status or
   design intent is in question.
+- `INSTALL.md` — one-time step that wires this folder into
+  ~/.claude/CLAUDE.md so it loads in every session, any folder. Separate
+  from SETUP.md and gated more strictly: it is the only step that edits
+  a file outside this folder. Run once when the folder is first placed
+  at its permanent path; does not delete itself.
 - `SETUP.md` — first-run personalization; present only until it
   completes and deletes itself.
 - `install/` — inert templates (hook config, skill sources); not

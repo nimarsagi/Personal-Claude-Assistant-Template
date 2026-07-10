@@ -14,14 +14,30 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    in-session knowledge — there's no API to read stored memory, so just
    draw on what you know from the conversation so far and ask if it's
    worth keeping.
-3. Interview to filter: ask what matters for this workflow to remember as
-   a baseline (role, standing preferences, recurring projects, working
-   style). Run this step even if steps 1–2 found nothing — the interview
-   alone is a sufficient floor.
+3. Interview to filter — MANDATORY, no exception. Ask what matters for
+   this workflow to remember as a baseline (role, standing preferences /
+   hard guardrails, recurring projects, working style, communication
+   defaults, goals). Run this step even if steps 1–2 found nothing — the
+   interview alone is a sufficient floor.
+   ANTI-PATTERN — do not do this: the user hands over rich material (a
+   pasted profile, an imported memory file, a detailed description) and
+   you skip the interview because "it already answers everything." It
+   never does. Material is INPUT to the interview, not a replacement for
+   it: the interview is where the user actively filters what becomes
+   baseline memory. With rich material the interview changes shape, not
+   existence — confirm what the material claims, and ask about whatever
+   it left uncovered (typically hard don'ts, communication defaults,
+   and what to call the user). "Skip" from the user on any question is
+   a valid answer; skipping the questions yourself is not.
 4. Show the confirmed entries for USER.md and memory/MEMORY.md and get an
    explicit yes before writing. Keep each file under half a page,
    purpose-not-inventory — facts and conventions, not example content.
-5. Delete this file (SETUP.md) — the whole file, nothing else.
+5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
+   it asserts that ALL steps above ran, including the step-3 interview;
+   if the interview did not happen, setup is not done and this file must
+   stay. Before deleting, verify each step in one line to the user
+   (1: import checked, 2: known context surfaced, 3: interview held,
+   4: entries approved and written).
 
 If setup is interrupted before step 5, this file still exists and will
 correctly re-run at the next session boot.
