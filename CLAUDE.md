@@ -47,6 +47,9 @@ decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
 - A session touching two projects → ask in one line which to file under
   (or split the entry, writing only the relevant material to each).
   Never silently guess on a write.
+- After writing the entry, git commit it in this folder with a one-line
+  message. Uncommitted memory has no history and no recovery — one stray
+  cleanup command away from gone.
 
 ## Reading journals (on demand)
 Pull journal history when the user asks a continuity question ("where did
@@ -74,7 +77,9 @@ Claude and asks to keep it: distill it to a one-line rule, classify it:
   CLAUDE.md at its root with just this rule.
 - When unsure, propose LOCAL.
 Show the exact proposed text and destination. Do not capture lessons
-unprompted.
+unprompted. After an approved GLOBAL write lands in this folder, git
+commit it here (LOCAL writes belong to that project's own version
+control, not this folder's).
 
 ## Standing rules
 - Approval gates on memory writes, not on action: background/autonomous

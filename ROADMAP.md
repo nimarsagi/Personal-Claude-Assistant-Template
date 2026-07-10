@@ -19,6 +19,9 @@ memory/proposals/ — never directly into MEMORY.md. This hook REPLACES
 the manual "log this session" trigger from Phase 0–1. The boot protocol
 already surfaces pending proposals at next session start for a quick
 approve/reject. This is why proposals/ exists in the scaffold.
+The same hook should also commit any uncommitted changes in this folder
+at session end — turning Phase 0–1's instruction-based "commit after
+memory writes" into a harness-enforced guarantee.
 
 ## Phase 3 — lesson-capture skill
 Triggers when the user corrects Claude; distills the correction to a

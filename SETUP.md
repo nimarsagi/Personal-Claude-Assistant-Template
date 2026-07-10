@@ -40,6 +40,10 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    stay. Before deleting, verify each step in one line to the user
    (1: import checked, 2: known context surfaced, 3: interview held,
    4: entries approved and written).
+6. Git commit the result in this folder — the populated USER.md and
+   memory/MEMORY.md plus this file's deletion, one commit. That commit is
+   the baseline snapshot of the user's memory; without it the personalized
+   files sit uncommitted, with no history and no recovery.
 
 If setup is interrupted before step 5, this file still exists and will
 correctly re-run at the next session boot.
