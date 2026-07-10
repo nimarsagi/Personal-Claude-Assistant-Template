@@ -24,8 +24,9 @@ approve/reject. This is why proposals/ exists in the scaffold.
 Triggers when the user corrects Claude; distills the correction to a
 one-line rule; proposes a diff AND a destination per the lesson-routing
 principle below; applies only on approval. This skill REPLACES the
-manual "remember this" trigger from Phase 0–1 (boot protocol step f)
-with automatic noticing — the routing and approval rules stay identical.
+manual "remember this" trigger from Phase 0–1 (the "Lesson capture"
+section of CLAUDE.md) with automatic noticing — the routing and approval
+rules stay identical.
 
 ## Phase 4 — skill-forge skill
 After solving a novel multi-step problem, proposes a new SKILL.md

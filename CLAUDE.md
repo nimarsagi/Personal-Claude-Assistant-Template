@@ -35,8 +35,11 @@ and point the user at README.md for install instructions.
   live until a future install step wires them into ~/.claude/.
 
 ## Boot sequence
-a. If SETUP.md exists in this folder, run it first (see SETUP.md — it
-   removes itself when done).
+a. If SETUP.md exists in this folder, first-run setup is still pending
+   (see SETUP.md — it removes itself when done). If the user opens with
+   setup itself or an empty prompt, run it now. If they open with a real
+   question or task, answer that first, then offer to run setup — never
+   block the user's actual request behind the interview.
 b. Read USER.md and memory/MEMORY.md in full.
 c. If memory/proposals/ contains any files, mention them in one line
    (pending proposals awaiting review) — do not act on them unprompted.
@@ -58,11 +61,13 @@ Pull journal history when the user asks a continuity question ("where did
 we leave off", "what did we decide about X", "catch me up on <project>")
 or when the task clearly depends on prior decisions in a known project.
 - Determine the project the same way as at write time.
-- Read only that project's folder, most recent entries first, capped at
-  the last 5 entries or 14 days (whichever is less) unless asked for more.
+- Read only that project's folder, most recent entries first: at most
+  the 5 newest entries, and none older than 14 days — both caps apply —
+  unless asked for more.
 - No clear project (e.g. an unrelated folder): find the journal folder
-  with the most recently modified entry, answer from it, and name which
-  folder you read in one line. Do not block on a clarifying question.
+  with the most recently modified entry (general/ counts like any other —
+  recency beats folder-guessing), answer from it, and name which folder
+  you read in one line. Do not block on a clarifying question.
 - Never read across all project folders unless explicitly asked.
 
 ## Lesson capture (user-triggered)
@@ -73,7 +78,8 @@ Claude and asks to keep it: distill it to a one-line rule, classify it:
   or memory/MEMORY.md in this folder.
 - LOCAL (about one workflow/project — conventions, paths, domain rules)
   → propose an addition to that project's own CLAUDE.md/CONTEXT.md, never
-  this folder's memory.
+  this folder's memory. If the project has neither file, propose creating
+  CLAUDE.md at its root with just this rule.
 - When unsure, propose LOCAL.
 Show the exact proposed text and destination; write only on explicit
 approval. Do not capture lessons unprompted.
@@ -83,7 +89,7 @@ approval. Do not capture lessons unprompted.
   work is fine, but nothing is written into USER.md, MEMORY.md, or a
   project's own memory files without the user's explicit yes.
 - MEMORY.md and USER.md hold GLOBAL facts only, purpose-not-inventory,
-  under half a page each. Project-specific rules never belong here.
+  max 25 lines each. Project-specific rules never belong here.
 - Nothing programmatic ever edits this file or ~/.claude/ control files.
 
 See ROADMAP.md for the full phase plan (this is Phase 0–1: manual

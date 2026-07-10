@@ -13,7 +13,9 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
 2. Surface what you already know about this person conversationally, from
    in-session knowledge — there's no API to read stored memory, so just
    draw on what you know from the conversation so far and ask if it's
-   worth keeping.
+   worth keeping. On a fresh session there is usually nothing yet: say so
+   in one line and move on — never guess or invent impressions to fill
+   this step.
 3. Interview to filter — MANDATORY, no exception. Ask what matters for
    this workflow to remember as a baseline (role, standing preferences /
    hard guardrails, recurring projects, working style, communication
@@ -30,7 +32,7 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    and what to call the user). "Skip" from the user on any question is
    a valid answer; skipping the questions yourself is not.
 4. Show the confirmed entries for USER.md and memory/MEMORY.md and get an
-   explicit yes before writing. Keep each file under half a page,
+   explicit yes before writing. Keep each file to max 25 lines,
    purpose-not-inventory — facts and conventions, not example content.
 5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
    it asserts that ALL steps above ran, including the step-3 interview;
