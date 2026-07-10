@@ -64,6 +64,9 @@ or when the task clearly depends on prior decisions in a known project.
   recency beats folder-guessing), answer from it, and name which folder
   you read in one line. Do not block on a clarifying question.
 - Never read across all project folders unless explicitly asked.
+- If an entry seems to belong to a different project than the folder it
+  sits in, flag it to the user in one line instead of using it silently —
+  misfiled history is invisible unless a reader says something.
 
 ## Lesson capture (user-triggered)
 When the user says "remember this" / "capture that lesson", or corrects
