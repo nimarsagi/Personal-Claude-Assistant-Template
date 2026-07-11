@@ -1,8 +1,13 @@
 # My Claude Assistant
 
-A file-based persistent memory, journal, and user model for Claude Code.
-Once installed, every Claude Code session — in any folder — boots with
-your standing context and can log sessions and capture lessons on request.
+Give Claude Code a memory. Normally every session starts from zero — it
+doesn't remember who you are, how you like to work, or what happened last
+time. This template fixes that: set it up once (it asks you a few
+questions about yourself), and every future session — in any project, any
+folder — boots already knowing your standing context. Say "log this
+session" to record what happened, and "where did we leave off?" to pick
+the thread back up, even weeks later. It's all plain markdown files a
+human can read, and Claude keeps them updated as you go.
 
 This file is for you, the human. Everything else in here is addressed to
 Claude. **Start here; the install order below is the only part that isn't
@@ -11,8 +16,18 @@ self-driving.**
 ## Install (once)
 
 The clone IS the install: this checkout becomes the live assistant, and
-git versions your memory over time. Keep the repo private — it will hold
-personal data.
+git versions your memory over time. Your copy will hold personal data, so
+it must stay private:
+
+- **Do NOT fork this repo on GitHub.** Forks of public repos are public
+  and can never be made private — your interview answers and journal
+  would end up on the open internet. Clone locally instead (step 1); a
+  local clone is private by nature.
+- **Optional but recommended — off-machine backup:** local git commits
+  don't survive a dead disk. Create your own empty PRIVATE repo and point
+  your clone at it: `git remote set-url origin <your-private-repo-url>`.
+  This also avoids confusing errors later — your clone's origin otherwise
+  points at this template repo, which you can't push to.
 
 1. Put this folder at whatever permanent path and name you want — there's
    no required location:
