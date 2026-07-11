@@ -43,7 +43,11 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
 6. Git commit the result in this folder — the populated USER.md and
    memory/MEMORY.md plus this file's deletion, one commit. That commit is
    the baseline snapshot of the user's memory; without it the personalized
-   files sit uncommitted, with no history and no recovery.
+   files sit uncommitted, with no history and no recovery. If git refuses
+   because no identity is configured (fresh machine: user.name/user.email
+   unset), set one for this repo first — `git config user.name "<name>"`
+   and `git config user.email "<email>"` (values from the user; repo-local
+   is fine) — then commit. Don't skip the commit over this.
 
 If setup is interrupted before step 5, this file still exists and will
 correctly re-run at the next session boot.
