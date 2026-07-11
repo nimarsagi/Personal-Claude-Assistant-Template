@@ -87,6 +87,27 @@ What it deliberately does NOT do on its own (yet): journal sessions or
 capture lessons unprompted — those stay user-triggered until the later
 phases in ROADMAP.md add background journaling with an approval inbox.
 
+## Where it's headed
+
+The later phases (see ROADMAP.md) make the assistant progressively more
+self-driving, always behind the same approval gate:
+
+- **Background journaling** — sessions get logged automatically into a
+  proposals inbox you review, instead of you having to remember to say
+  "log this session".
+- **Automatic lesson capture** — when you correct Claude, it notices,
+  distills the correction into a rule, and proposes where to file it.
+- **Skill proposals** — after you solve a hard multi-step problem, it
+  searches the journal for whether you've struggled through the same
+  thing before. Solved it twice, with real trial-and-error both times?
+  It proposes packaging the solution as a reusable skill, so the third
+  time is one command.
+
+You don't have to wait for those phases to get a taste of the last one:
+the journal is plain markdown, so you can always ask "search my journal —
+which processes have I repeated?" and get the same analysis on demand.
+The limit is coverage: the journal only knows what got logged.
+
 ## What's in here
 
 | Path | What it is |
