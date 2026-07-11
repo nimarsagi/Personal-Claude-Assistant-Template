@@ -63,6 +63,30 @@ top of `CLAUDE.md`).
 - **"where did we leave off?"** — pulls recent journal entries for the
   current project.
 
+## What it does on its own
+
+Beyond those commands, every session quietly does a few things without
+being asked:
+
+- **Loads who you are at boot** — your user model and global memory are
+  read at the start of every session, so you never have to re-introduce
+  yourself or restate standing preferences.
+- **Notices when something's off** — if setup never actually finished, or
+  a journal entry looks like it was filed under the wrong project, it says
+  so in one line instead of silently working from bad state.
+- **Backs memory up as it goes** — every memory write is followed by a
+  git commit, so your history is versioned and one accidental deletion
+  can't erase it.
+- **Defends its own boundaries** — a copy of this folder that isn't the
+  installed one refuses to run setup or write memory; stale notes from
+  Claude's other, built-in memory don't override what's recorded here;
+  and nothing is ever written into your memory files without your
+  explicit yes.
+
+What it deliberately does NOT do on its own (yet): journal sessions or
+capture lessons unprompted — those stay user-triggered until the later
+phases in ROADMAP.md add background journaling with an approval inbox.
+
 ## What's in here
 
 | Path | What it is |
