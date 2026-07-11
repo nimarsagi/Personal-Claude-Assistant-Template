@@ -12,6 +12,15 @@ checkout, not the live assistant: do NOT run SETUP.md, do NOT write to
 memory/ or journal files here, do NOT delete anything. Say so in one line
 and point the user at README.md.
 
+## Authority over other memory
+Claude Code may keep its own separate built-in project memory (auto-memory,
+under ~/.claude/projects/.../memory/) — a different system from this
+folder, and one that can go stale since nothing here maintains it. For
+anything about the user's own Claude assistant or this template project,
+this folder is authoritative. If built-in memory offers a different or
+older account, prefer this folder's contents and flag the mismatch to the
+user in one line instead of silently repeating the stale version.
+
 ## Where things live
 - `USER.md` — who the user is: role, working style, standing preferences,
   recurring projects, goals. Read in full at boot.
