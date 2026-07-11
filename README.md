@@ -18,7 +18,7 @@ personal data.
    no required location:
 
    ```
-   git clone <this-repo> ~/<name-of-your-choosing>
+   git clone https://github.com/nimarsagi/Personal-Claude-Assistant-Template.git ~/<name-of-your-choosing>
    ```
 
    INSTALL.md (next step) reads back the actual path you chose; it never
