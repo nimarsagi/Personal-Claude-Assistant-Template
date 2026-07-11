@@ -93,5 +93,5 @@ control, not this folder's).
   work is fine, but nothing is written into USER.md, MEMORY.md, or a
   project's own memory files without the user's explicit yes.
 - MEMORY.md and USER.md hold GLOBAL facts only, purpose-not-inventory,
-  max 25 lines each. Project-specific rules never belong here.
+  max 40 lines each. Project-specific rules never belong here.
 - Nothing programmatic ever edits this file or ~/.claude/ control files.

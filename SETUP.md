@@ -32,7 +32,7 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    and what to call the user). "Skip" from the user on any question is
    a valid answer; skipping the questions yourself is not.
 4. Show the confirmed entries for USER.md and memory/MEMORY.md and get an
-   explicit yes before writing. Keep each file to max 25 lines,
+   explicit yes before writing. Keep each file to max 40 lines,
    purpose-not-inventory — facts and conventions, not example content.
 5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
    it asserts that ALL steps above ran, including the step-3 interview;
