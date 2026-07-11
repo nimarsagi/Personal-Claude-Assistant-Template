@@ -34,7 +34,12 @@ rules stay identical.
 ## Phase 4 — skill-forge skill
 After solving a novel multi-step problem, proposes a new SKILL.md
 (agentskills.io-compatible). Bar: recurring problem + real
-trial-and-error.
+trial-and-error. Detection leans on Phase 2's journal, so this phase
+can't come before it: trial-and-error is visible within the current
+session (several failed attempts before a working fix); recurring is
+checked by searching the journal for a similar problem solved before. A
+first occurrence, however hard-won, doesn't trigger a proposal — it takes
+a second one to confirm the pattern is real rather than a one-off.
 
 ## Phase 5 — consolidation
 Periodic gardener-style audit merges journal themes into MEMORY.md,
