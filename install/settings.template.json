@@ -1,4 +1,17 @@
 {
-  "_comment": "Placeholder for the Phase 2 SessionEnd hook config. Inert — not active until a future install step merges it into ~/.claude/settings.json. No hooks are installed in Phase 0-1.",
-  "hooks": {}
+  "_comment": "Phase 2 SessionEnd hook. Merge the 'hooks' key below into ~/.claude/settings.json via the hook-install section of INSTALL.md, replacing <assistant-path> with this folder's absolute path. This file itself is inert — nothing reads it at runtime.",
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "<assistant-path>/install/hooks/session-end.sh",
+            "timeout": 180
+          }
+        ]
+      }
+    ]
+  }
 }

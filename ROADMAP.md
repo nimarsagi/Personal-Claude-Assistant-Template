@@ -1,27 +1,43 @@
 # Roadmap
 
 The full plan for My Claude Assistant, so each phase is designed with the
-end-state in mind. Only Phase 0–1 is built/live today.
+end-state in mind. Phases 0–2 are built/live today.
 
-## Phase 0–1 (current)
+## Phase 0–1 (built)
 Scaffold + boot protocol + first-run setup. Memory files load in every
-session via the pointer in ~/.claude/CLAUDE.md. Journaling is
-USER-TRIGGERED (the user says "log this session"); best-effort automatic
-journaling does not exist until the Phase 2 hook. Lesson capture is
+session via the pointer in ~/.claude/CLAUDE.md. Journaling was
+USER-TRIGGERED only ("log this session") until Phase 2. Lesson capture is
 likewise USER-TRIGGERED ("remember this") until the Phase 3 skill.
-Stop condition: a fresh session in an unrelated folder answers "where
-did we leave off?"
+Stop condition (met 2026-07-12): a fresh session in an unrelated folder
+answers "where did we leave off?"
 
-## Phase 2 — background journaling
-A SessionEnd hook fires a detached headless process that reads the
-session transcript and writes journal entries + candidate lessons into
-memory/proposals/ — never directly into MEMORY.md. This hook REPLACES
-the manual "log this session" trigger from Phase 0–1. The boot protocol
-already surfaces pending proposals at next session start for a quick
-approve/reject. This is why proposals/ exists in the scaffold.
-The same hook should also commit any uncommitted changes in this folder
-at session end — turning Phase 0–1's instruction-based "commit after
-memory writes" into a harness-enforced guarantee.
+## Phase 2 — background journaling (built 2026-07-12)
+A SessionEnd hook (`install/hooks/session-end.sh`, wired into
+~/.claude/settings.json by INSTALL.md's hook-install section) fires a
+detached worker at every session end that reads the session transcript
+and, via a cheap headless Claude run, writes a journal-entry draft plus
+candidate lessons into memory/proposals/ — never directly into MEMORY.md.
+The boot protocol surfaces pending proposals at next session start; the
+"Reviewing proposals" section of CLAUDE.md handles approve/edit/reject.
+This is why proposals/ exists in the scaffold. The same hook also commits
+any uncommitted changes in this folder at session end — turning
+Phase 0–1's instruction-based "commit after memory writes" into a
+harness-enforced guarantee.
+Build notes, where reality amended the original sketch:
+- The manual "log this session" trigger was KEPT, not replaced — it's
+  still the way to get an entry written immediately and directly; the
+  hook is the safety net for sessions nobody logged. The summarizer is
+  told to write nothing when a session already logged itself.
+- Only interactive sessions are journaled: headless (`claude -p`) runs
+  end with reason=prompt_input_exit and are skipped — which is also one
+  of three loop guards keeping the hook's own summarizer session (and
+  any scripted helper runs) from journaling themselves. The other two:
+  the summarizer runs with all hooks disabled (`--settings
+  '{"disableAllHooks": true}'` — verified; `--bare` also skips OAuth
+  login, so it can't be used), and under a marker env var the script
+  checks.
+- The headless run gets NO tools: it only returns text, and the shell
+  script does every file write and commit itself.
 
 ## Phase 3 — lesson-capture skill
 Triggers when the user corrects Claude; distills the correction to a

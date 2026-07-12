@@ -28,10 +28,12 @@ user in one line instead of silently repeating the stale version.
   that hold across every project. Read in full at boot.
 - `memory/journal/<project>/YYYY-MM-DD.md` — per-project session history;
   on demand only (see "Reading journals").
-- `memory/proposals/` — machine-proposed entries awaiting approval
-  (Phase 2+); existence checked at boot, contents read only on review.
+- `memory/proposals/` — journal-entry drafts written by the Phase 2
+  session-end hook, awaiting the user's approval; existence checked at
+  boot, contents read only on review (see "Reviewing proposals").
 - `ROADMAP.md` — phase plan; read only when phase status or design intent
-  is in question. This is Phase 0–1: manual logging and lesson capture.
+  is in question. Phases 0–2 are live: journaling happens both manually
+  and via the background hook; lesson capture is still manual (Phase 3).
 - `INSTALL.md` / `SETUP.md` / `install/` — install-time only; each
   explains itself. SETUP.md deletes itself when first-run setup is done.
 
@@ -46,12 +48,17 @@ b. Read USER.md and memory/MEMORY.md in full. If USER.md still contains
    file was deleted early — tell the user in one line (SETUP.md can be
    restored with `git checkout SETUP.md`); don't just proceed as if
    setup were done.
-c. If memory/proposals/ contains any files, mention them in one line
-   (pending proposals awaiting review) — do not act on them unprompted.
+c. If memory/proposals/ contains any files besides its own README,
+   mention them in one line (pending proposals awaiting review) — do not
+   act on them unprompted.
 d. Do NOT read journal files at boot; they load on demand only (see
    "Reading journals").
 
 ## Logging a session (user-triggered)
+If the Phase 2 session-end hook is installed, every session is drafted
+into memory/proposals/ automatically when it ends — forgetting to log no
+longer loses the session. The manual trigger below still works and is the
+right tool when the user wants an entry written immediately and directly.
 When the user says "log this session" (or equivalent): determine the
 project from working directory / session content, and append outcomes,
 decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
@@ -63,6 +70,23 @@ decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
 - After writing the entry, git commit it in this folder with a one-line
   message. Uncommitted memory has no history and no recovery — one stray
   cleanup command away from gone.
+
+## Reviewing proposals (user-triggered)
+When the user says "review proposals" (or responds to the boot-time
+mention of pending ones): for each proposal file in memory/proposals/
+(its README isn't one), show the draft entry and its proposed destination
+journal file, then ask — approve, edit, or reject.
+- Approve → append the entry to memory/journal/<project>/<date>.md and
+  delete the proposal file. Apply the same routing scrutiny as a manual
+  log: if the proposed project looks wrong, say so instead of filing.
+- Reject → delete the proposal file.
+- Edits before approving are welcome; the user's wording wins.
+- Candidate lessons inside a proposal do NOT ride along automatically —
+  each goes through the Lesson capture rules below (GLOBAL/LOCAL routing,
+  its own explicit yes) or is dropped with the proposal.
+After processing, git commit the result in this folder. Proposals are
+drafts from a background process; they never bypass the approval gate,
+and nothing moves out of proposals/ unprompted.
 
 ## Reading journals (on demand)
 Pull journal history when the user asks a continuity question ("where did

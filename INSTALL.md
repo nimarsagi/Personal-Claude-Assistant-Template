@@ -67,8 +67,47 @@ needed if the user ever moves or renames the folder.
 
 ## What this step must never do
 - Never touch settings.json's actual content — it is backed up in step 2
-  as a safety net, not edited. Hook installation is a future phase.
+  as a safety net, not edited by the pointer install above. Hook
+  installation is the separate, equally-gated procedure below — never
+  fold it into the pointer install silently.
 - Never rewrite, reorder, or remove any existing content in
   ~/.claude/CLAUDE.md outside the delimited block.
 - Never run automatically / unattended. This is the one step in the whole
   scaffold most worth a human in the loop for, every single time.
+
+## Hook install — Phase 2 background journaling (optional, run once)
+
+Run this only when the user asks for it (e.g. "install the session-end
+hook"), and only after the pointer install above is done and first-run
+setup has completed. It wires `install/hooks/session-end.sh` into
+Claude Code's SessionEnd event: after every session, anywhere, the script
+auto-commits this folder and drafts a journal-entry proposal into
+memory/proposals/ (see ROADMAP.md Phase 2). It edits
+~/.claude/settings.json — a machine-readable control file where one
+malformed comma makes Claude Code ignore the ENTIRE file — so it gets the
+same gates as the pointer install:
+
+1. **Idempotency check.** Read ~/.claude/settings.json. If any SessionEnd
+   hook already points at a session-end.sh, STOP and ask the user — do
+   not add a second one.
+2. **Backup both files** (~/.claude/CLAUDE.md and ~/.claude/settings.json)
+   to ~/.claude/backup-<YYYY-MM-DD-HHMM>/, exactly as in step 2 above.
+3. **Show the exact resulting JSON and wait for an explicit yes.** Take
+   the `hooks` key from install/settings.template.json, replace
+   `<assistant-path>` with this folder's absolute path, and merge it into
+   the current file's content. If the file already has a `hooks` key,
+   merge the SessionEnd entry into it — never drop, rewrite, or reorder
+   anything already in the file. If settings.json doesn't exist, the new
+   file is just `{ "hooks": ... }`.
+4. **Write, then validate.** After writing, parse the file
+   (`python3 -m json.tool ~/.claude/settings.json`). If parsing fails,
+   restore the backup immediately and say so.
+5. **Make the script executable** (`chmod +x install/hooks/session-end.sh`
+   in this folder) and confirm in one line what changed. The hook takes
+   effect for sessions started from now on.
+
+Requirements: bash, python3, git, and the `claude` CLI on PATH (all
+already present on a machine running Claude Code, except python3 on a
+bare macOS — `xcode-select --install` provides it). To uninstall, remove
+the SessionEnd entry from ~/.claude/settings.json (same gates: backup,
+show, validate).

@@ -48,6 +48,13 @@ it must stay private:
    and runs the first-run interview (role, preferences, projects, goals),
    then SETUP.md deletes itself. That's it.
 
+4. Optional, any time later: say **"install the session-end hook"** to
+   turn on automatic background journaling — every session gets drafted
+   into your approval inbox when it ends, so forgetting to say "log this
+   session" no longer loses it. This is the only step that edits
+   `~/.claude/settings.json`, and it runs behind the same
+   backup-show-confirm gate as step 2 (see INSTALL.md).
+
 Order matters: INSTALL before SETUP. Until the pointer from step 2
 exists, the boot protocol treats any copy of this folder as a source
 checkout and refuses to run setup or write memory (see the guard at the
@@ -62,6 +69,9 @@ top of `CLAUDE.md`).
   explicit yes.
 - **"where did we leave off?"** — pulls recent journal entries for the
   current project.
+- **"review proposals"** — walks through auto-drafted journal entries
+  waiting in your approval inbox (only relevant once the session-end
+  hook from install step 4 is on); approve, edit, or reject each.
 
 ## What it does on its own
 
@@ -82,19 +92,22 @@ being asked:
   Claude's other, built-in memory don't override what's recorded here;
   and nothing is ever written into your memory files without your
   explicit yes.
+- **Journals your sessions in the background** (once the hook from
+  install step 4 is on) — when any session ends, a detached helper reads
+  the transcript, drafts a journal entry, and drops it into a proposals
+  inbox announced at your next session start. Drafts only: nothing enters
+  real memory until you approve it. The same helper commits any
+  unsaved memory changes, so the "backs memory up" promise above stops
+  depending on anyone remembering.
 
-What it deliberately does NOT do on its own (yet): journal sessions or
-capture lessons unprompted — those stay user-triggered until the later
-phases in ROADMAP.md add background journaling with an approval inbox.
+What it deliberately does NOT do on its own (yet): capture lessons
+unprompted — that stays user-triggered until Phase 3 in ROADMAP.md.
 
 ## Where it's headed
 
 The later phases (see ROADMAP.md) make the assistant progressively more
 self-driving, always behind the same approval gate:
 
-- **Background journaling** — sessions get logged automatically into a
-  proposals inbox you review, instead of you having to remember to say
-  "log this session".
 - **Automatic lesson capture** — when you correct Claude, it notices,
   distills the correction into a rule, and proposes where to file it.
 - **Skill proposals** — after you solve a hard multi-step problem, it
@@ -115,11 +128,11 @@ The limit is coverage: the journal only knows what got logged.
 | `CLAUDE.md` | Boot protocol Claude follows every session |
 | `USER.md`, `memory/MEMORY.md` | Your user model and global memory (filled by setup) |
 | `memory/journal/` | Per-project session logs |
-| `memory/proposals/` | Inbox for machine-proposed memories (Phase 2+) |
-| `INSTALL.md` | One-time pointer install — the only step that edits outside this folder |
+| `memory/proposals/` | Approval inbox for auto-drafted journal entries |
+| `INSTALL.md` | Pointer install + optional hook install — the only steps that edit outside this folder |
 | `SETUP.md` | First-run interview; deletes itself when done |
-| `ROADMAP.md` | Phase plan (only Phase 0–1 is live) |
-| `install/` | Inert templates for future phases |
+| `ROADMAP.md` | Phase plan (Phases 0–2 are live) |
+| `install/` | The session-end hook script + settings template |
 
 ## Uninstall
 

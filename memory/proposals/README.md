@@ -1,1 +1,1 @@
-Inbox for machine-proposed journal entries and lessons awaiting approval — arrives with the Phase 2 hook; empty until then.
+Approval inbox: journal-entry drafts written here by the Phase 2 session-end hook when a session ends. Nothing leaves this folder without the user's yes — say "review proposals" to approve, edit, or reject each.
