@@ -169,7 +169,7 @@ if [ -z "$BODY" ]; then
   if printf '%s' "$OUTPUT" | grep -q 'NOTHING_TO_LOG'; then
     log "nothing to log for session in ${SESSION_CWD:-unknown}"
   else
-    log "summarizer output unparseable — skipped (no markers, no NOTHING_TO_LOG)"
+    log "summarizer output unparseable — skipped (no markers, no NOTHING_TO_LOG); raw head: $(printf '%s' "$OUTPUT" | head -c 400 | tr '\n' ' ')"
   fi
   exit 0
 fi
