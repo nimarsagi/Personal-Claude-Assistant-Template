@@ -55,6 +55,12 @@ it must stay private:
    `~/.claude/settings.json`, and it runs behind the same
    backup-show-confirm gate as step 2 (see INSTALL.md).
 
+5. Optional, any time later: say **"install the lesson-capture skill"**
+   to make Claude notice when you correct it — a correction that implies
+   a standing rule ("always ask before deleting") gets distilled into a
+   lesson and offered for saving; nothing is written without your yes.
+   This creates one symlink in `~/.claude/skills/` (see INSTALL.md).
+
 Order matters: INSTALL before SETUP. Until the pointer from step 2
 exists, the boot protocol treats any copy of this folder as a source
 checkout and refuses to run setup or write memory (see the guard at the
@@ -99,17 +105,21 @@ being asked:
   real memory until you approve it. The same helper commits any
   unsaved memory changes, so the "backs memory up" promise above stops
   depending on anyone remembering.
+- **Notices corrections worth keeping** (once the skill from install
+  step 5 is on) — when you correct Claude in a way that implies a
+  standing rule, it offers to save the lesson, with a suggested home
+  (global memory, a domain's lessons file, or that project's own
+  CLAUDE.md). One-off fixes are left alone; nothing is saved without
+  your yes.
 
-What it deliberately does NOT do on its own (yet): capture lessons
-unprompted — that stays user-triggered until Phase 3 in ROADMAP.md.
+What it deliberately does NOT do on its own (yet): package your repeated
+solutions into new skills — that's Phase 4 in ROADMAP.md.
 
 ## Where it's headed
 
 The later phases (see ROADMAP.md) make the assistant progressively more
 self-driving, always behind the same approval gate:
 
-- **Automatic lesson capture** — when you correct Claude, it notices,
-  distills the correction into a rule, and proposes where to file it.
 - **Skill proposals** — after you solve a hard multi-step problem, it
   searches the journal for whether you've struggled through the same
   thing before. Solved it twice, with real trial-and-error both times?
@@ -127,15 +137,24 @@ The limit is coverage: the journal only knows what got logged.
 |---|---|
 | `CLAUDE.md` | Boot protocol Claude follows every session |
 | `USER.md`, `memory/MEMORY.md` | Your user model and global memory (filled by setup) |
-| `memory/journal/<domain>/` | Per-domain `sessions/` (dated logs) + `lessons/` (key rules for that area) |
+| `memory/journal/<domain>/` | Per-domain `sessions/` (dated logs) + `lessons/` (key rules) + `skills/` (that domain's own skills) |
 | `memory/proposals/` | Approval inbox for auto-drafted journal entries |
-| `INSTALL.md` | Pointer install + optional hook install — the only steps that edit outside this folder |
+| `INSTALL.md` | Pointer install + optional hook/skill installs — the only steps that edit outside this folder |
 | `SETUP.md` | First-run interview; deletes itself when done |
-| `ROADMAP.md` | Phase plan (Phases 0–2 are live) |
-| `install/` | The session-end hook script + settings template |
+| `ROADMAP.md` | Phase plan (Phases 0–3 are live) |
+| `install/` | The session-end hook script, settings template, and `general_skills/` (skills useful everywhere, e.g. lesson-capture) |
+
+Domain skills activate per project: symlink one from
+`memory/journal/<domain>/skills/` into that project's `.claude/skills/`
+and it loads only there; delete the symlink to turn it off. General
+skills live in `install/general_skills/` and load everywhere once
+installed (step 5).
 
 ## Uninstall
 
 Delete the `<!-- my-claude-assistant:start/end -->` block from
-`~/.claude/CLAUDE.md`, then delete this folder. Backups of every control
-file INSTALL.md ever touched live in `~/.claude/backup-<timestamp>/`.
+`~/.claude/CLAUDE.md`, remove the SessionEnd entry from
+`~/.claude/settings.json` and any skill symlinks in `~/.claude/skills/`
+(if you installed those optional steps), then delete this folder.
+Backups of every control file INSTALL.md ever touched live in
+`~/.claude/backup-<timestamp>/`.

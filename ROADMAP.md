@@ -1,7 +1,7 @@
 # Roadmap
 
 The full plan for My Claude Assistant, so each phase is designed with the
-end-state in mind. Phases 0–2 are built/live today.
+end-state in mind. Phases 0–3 are built/live today.
 
 ## Phase 0–1 (built)
 Scaffold + boot protocol + first-run setup. Memory files load in every
@@ -39,13 +39,27 @@ Build notes, where reality amended the original sketch:
 - The headless run gets NO tools: it only returns text, and the shell
   script does every file write and commit itself.
 
-## Phase 3 — lesson-capture skill
+## Phase 3 — lesson-capture skill (built 2026-07-12)
 Triggers when the user corrects Claude; distills the correction to a
-one-line rule; proposes a diff AND a destination per the lesson-routing
-principle below; applies only on approval. This skill REPLACES the
-manual "remember this" trigger from Phase 0–1 (the "Lesson capture"
-section of CLAUDE.md) with automatic noticing — the routing and approval
-rules stay identical.
+Rule/When/Why lesson; proposes the text AND a destination per the
+lesson-routing principle below; applies only on approval. The manual
+"remember this" trigger was KEPT (like Phase 2 kept manual logging) —
+the skill adds automatic noticing on top; routing and approval rules
+are identical for both.
+Build notes, where reality amended the original sketch:
+- Thin skill, single source of truth: SKILL.md
+  (install/general_skills/lesson-capture/) owns only the NOTICING —
+  when to fire, when to stay quiet — and defers the whole procedure to
+  CLAUDE.md's "Lesson capture" section, so the rules can't drift apart.
+- Sensitivity (user-chosen): fire on GENERALIZABLE corrections — ones
+  implying a standing rule ("always/never...", same mistake twice) —
+  not on one-off fixes. Explicit "remember this" always fires.
+- Installed by symlinking into ~/.claude/skills/ (documented, supported
+  by Claude Code) via INSTALL.md's skill-install section — the source
+  stays git-tracked here.
+- Two skill homes with activation to match — see the skills
+  architecture below (this build renamed install/skills/ to
+  install/general_skills/ and added memory/journal/<domain>/skills/).
 
 ## Phase 4 — skill-forge skill
 After solving a novel multi-step problem, proposes a new SKILL.md
@@ -63,14 +77,28 @@ prunes stale rules, enforces page limits. Manual weekly at first; later
 a scheduled headless run.
 
 ## Skills architecture (applies to Phase 3–4)
-Skills follow the same source-vs-install split as memory. The source of
-truth for every skill lives in install/skills/ inside this folder
-(git-tracked, inert). To be ambient — loaded in every session, any
-folder — a skill must be symlinked into the user-level ~/.claude/skills/
-by the install step. Skills are NOT loaded directly from this project
-folder; a skill that only exists in install/skills/ is not yet live.
-skill-forge (Phase 4) writes new skills into install/skills/ and the
-install step links them into ~/.claude/skills/.
+Skills follow the same source-vs-install split as memory, with TWO
+git-tracked homes in this folder — and activation matches the home:
+- install/general_skills/<name>/ — skills useful in every kind of work
+  (lesson-capture lives here). Made live by a symlink in the user-level
+  ~/.claude/skills/ (INSTALL.md's skill-install section) → loaded in
+  every session, any folder.
+- memory/journal/<domain>/skills/<name>/ — skills specific to one domain
+  of the user's work, beside that domain's sessions/ and lessons/
+  (private, like the rest of the journal — these never enter the public
+  template). Made live PER PROJECT: symlinked into a project's own
+  .claude/skills/ → loaded only there. Opt-in by construction; turning
+  one off is deleting the symlink. No settings-based disable mechanism
+  is built or documented — a general skill someone keeps wanting to
+  disable isn't general, and should be demoted to a domain skill.
+A skill that only exists in its home folder is not yet live anywhere.
+skill-forge (Phase 4) routes its output like lessons: domain-specific →
+that domain's skills/, genuinely general → install/general_skills/.
+**Extend-before-create:** before proposing any new skill, skill-forge
+must check BOTH homes for an existing skill the solution belongs in and
+prefer proposing an amendment to it; a new skill requires a problem that
+fits no existing skill's purpose. This keeps the library a handful of
+substantial skills instead of a sprawl of near-duplicate small ones.
 
 ## Standing principles across all phases
 

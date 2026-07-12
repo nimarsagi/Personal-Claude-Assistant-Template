@@ -31,12 +31,16 @@ user in one line instead of silently repeating the stale version.
 - `memory/journal/<domain>/lessons/LESSONS.md` — key lessons for that
   domain (rules spanning its many projects, but not all of the user's
   work). Read when the task clearly falls in that domain — not at boot.
+- `memory/journal/<domain>/skills/` — that domain's own skills, active
+  only in projects they're symlinked into (see "Managing skills").
+  General skills live in `install/general_skills/` instead.
 - `memory/proposals/` — journal-entry drafts written by the Phase 2
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
 - `ROADMAP.md` — phase plan; read only when phase status or design intent
-  is in question. Phases 0–2 are live: journaling happens both manually
-  and via the background hook; lesson capture is still manual (Phase 3).
+  is in question. Phases 0–3 are live: journaling happens both manually
+  and via the background hook; lesson capture is manual AND skill-noticed
+  once the lesson-capture skill is installed (see "Lesson capture").
 - `INSTALL.md` / `SETUP.md` / `install/` — install-time only; each
   explains itself. SETUP.md deletes itself when first-run setup is done.
 
@@ -118,9 +122,16 @@ or when the task clearly depends on prior decisions in a known project.
   sits in, flag it to the user in one line instead of using it silently —
   misfiled history is invisible unless a reader says something.
 
-## Lesson capture (user-triggered)
-When the user says "remember this" / "capture that lesson", or corrects
-Claude and asks to keep it: distill it into a self-contained lesson in
+## Lesson capture
+Two triggers, same procedure. User-triggered: "remember this" / "capture
+that lesson". Skill-noticed (once the Phase 3 lesson-capture skill is
+installed): the user corrects Claude in a way that GENERALIZES — implies
+a standing rule for future sessions ("always...", "never...", "stop
+doing...", or the same mistake corrected twice). For a generalizable
+correction, finish the current action first, then offer the lesson in
+one line; stay quiet on one-off fixes ("no, I meant the other file").
+Noticing is free — writing still always requires the explicit yes below.
+Either way: distill it into a self-contained lesson in
 plain language, three short lines:
 - Rule: what to do or avoid, as an imperative.
 - When: the situation that should trigger the rule.
@@ -142,10 +153,29 @@ lesson — sharpen it or drop it. Then classify it:
   CLAUDE.md at its root with just this rule.
 - When unsure, propose the narrowest tier that fits: LOCAL over DOMAIN
   over GLOBAL.
-Show the exact proposed text and destination. Do not capture lessons
-unprompted. After an approved GLOBAL or DOMAIN write lands in this
-folder, git commit it here (LOCAL writes belong to that project's own
-version control, not this folder's).
+Before proposing, read the destination file: if an equivalent rule is
+already there, propose sharpening that rule instead of adding a
+duplicate. Show the exact proposed text and destination; write only on
+an explicit yes covering both. After an approved GLOBAL or DOMAIN write
+lands in this folder, git commit it here (LOCAL writes belong to that
+project's own version control, not this folder's).
+
+## Managing skills
+Skills have two homes, and where a skill is SYMLINKED — not where it
+lives — decides where it's active:
+- `install/general_skills/<name>/` — general skills, useful in every
+  kind of work (e.g. lesson-capture). Activated once via a symlink in
+  ~/.claude/skills/ (INSTALL.md's skill-install section) → loaded in
+  every session, everywhere.
+- `memory/journal/<domain>/skills/<name>/` — skills specific to one
+  domain of the user's work. Activated per project: symlink into that
+  project's own .claude/skills/ → loaded only there. Opt-in by
+  construction; "turn it off here" = delete that symlink.
+When the user says "activate the <domain> skills here" (or names one),
+show the exact symlink command(s) for this project's .claude/skills/ and
+get a yes before creating them. A skill wanted in every project isn't a
+domain skill — propose moving it to general_skills/ instead of linking
+it project by project.
 
 ## Standing rules
 - Approval gates on memory writes, not on action: background/autonomous

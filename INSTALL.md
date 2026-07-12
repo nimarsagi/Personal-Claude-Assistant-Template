@@ -111,3 +111,37 @@ already present on a machine running Claude Code, except python3 on a
 bare macOS — `xcode-select --install` provides it). To uninstall, remove
 the SessionEnd entry from ~/.claude/settings.json (same gates: backup,
 show, validate).
+
+## Skill install — Phase 3 lesson capture (optional, run once)
+
+Run this only when the user asks for it (e.g. "install the lesson-capture
+skill"), after the pointer install is done. It makes the skill at
+`install/general_skills/lesson-capture/` ambient — loaded in every
+session, any folder — by symlinking it into ~/.claude/skills/, where
+Claude Code loads user-level skills from (symlinked skill folders are
+officially supported). No file is edited, so no backup is needed; the
+gates are a collision check and the same show-and-confirm discipline:
+
+1. **Idempotency / collision check.** Look at
+   ~/.claude/skills/lesson-capture. If it is already a symlink to this
+   folder's install/general_skills/lesson-capture, say so and stop —
+   nothing to do. If ANYTHING else sits at that path (a real directory,
+   or a symlink elsewhere), STOP and ask the user — never overwrite it.
+2. **Show the exact command and wait for an explicit yes:**
+
+   ```
+   mkdir -p ~/.claude/skills
+   ln -s "<this folder's absolute path>/install/general_skills/lesson-capture" ~/.claude/skills/lesson-capture
+   ```
+
+   Fill in the real absolute path (output of `pwd`) — never assume one.
+3. **Create the link, then verify** that
+   ~/.claude/skills/lesson-capture/SKILL.md resolves and is readable.
+   Confirm in one line. The skill loads for sessions started from now on.
+
+The same procedure works for any future skill in general_skills/ — and
+for a domain skill from memory/journal/<domain>/skills/, with one
+difference: domain skills are symlinked into a specific project's
+.claude/skills/ (active only there), not into ~/.claude/skills/. To
+uninstall any skill, delete its symlink (`rm ~/.claude/skills/<name>`) —
+the source folder here stays untouched.
