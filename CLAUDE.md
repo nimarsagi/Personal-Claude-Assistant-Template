@@ -118,11 +118,15 @@ or when the task clearly depends on prior decisions in a known project.
 
 ## Lesson capture (user-triggered)
 When the user says "remember this" / "capture that lesson", or corrects
-Claude and asks to keep it: distill it to a one-line INSTRUCTION a future
-session can act on — when <situation>, do/avoid <behavior> (why: <the
-mistake it prevents>). A lesson that only describes what happened tells a
-future session nothing; sharpen it into what to do differently or drop
-it. Then classify it:
+Claude and asks to keep it: distill it into a self-contained lesson in
+plain language, three short lines:
+- Rule: what to do or avoid, as an imperative.
+- When: the situation that should trigger the rule.
+- Why: the concrete mistake it prevents — what actually went wrong once.
+The test: a reader who wasn't in the session must understand it with no
+other context. Compressed jargon that only makes sense today fails the
+test; a lesson that only describes what happened (no Rule) isn't a
+lesson — sharpen it or drop it. Then classify it:
 - GLOBAL (about the user — preferences, working style, standing
   decisions, true across all projects) → propose an addition to USER.md
   or memory/MEMORY.md in this folder.

@@ -144,9 +144,14 @@ PROJECT: <short-kebab-case-project-name>
 <concise markdown bullets: outcomes, decisions, open loops>
 END_PROPOSAL
 
-Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects), DOMAIN (one standing domain of the user's work), or LOCAL (this one project only). Every lesson must be an instruction a future session can act on — 'when <situation>, do/avoid <behavior> (why: <the mistake it prevents>)' — never a mere description of what happened; if it can't be phrased that way, leave it out.
+Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection with at most 3 lessons. Each lesson is four short plain-language lines:
+- Scope: GLOBAL (about the user, true across all projects), DOMAIN (one standing domain of the user's work), or LOCAL (this one project only)
+- Rule: what a future session should do or avoid, as an imperative
+- When: the situation that should trigger the rule
+- Why: the concrete mistake it prevents, from this session
+Write for a reader who did NOT see this session: no shorthand, no jargon left unexplained, full sentences. A lesson that merely describes what happened, or that can't be made self-explanatory, must be left out.
 
-Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of the user's canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 30 lines between the markers; no text outside the markers."
+Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of the user's canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 40 lines between the markers; no text outside the markers."
 
 OUTPUT="$(MY_CLAUDE_ASSISTANT_JOURNALER=1 "$CLAUDE_BIN" -p "$PROMPT" --model haiku --settings '{"disableAllHooks": true}' < "$CONVO_FILE" 2>>"$LOG")" || {
   log "summarizer run failed — skipped"; rm -f "$CONVO_FILE"; exit 0;
