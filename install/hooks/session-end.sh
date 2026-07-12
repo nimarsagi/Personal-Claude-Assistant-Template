@@ -132,35 +132,43 @@ CLAUDE_BIN="$(command -v claude || echo "$HOME/.npm-global/bin/claude")"
 TODAY="$(date +%F)"
 PROMPT="You are the background journaler for a personal Claude assistant. Below is the conversation from a Claude Code session that just ended (working directory: ${SESSION_CWD:-unknown}, date: $TODAY). Draft a journal entry of what future sessions would need: outcomes, decisions, open loops.
 
-Reply in EXACTLY one of these two formats, with nothing before or after.
-
-Format 1 — use when there is nothing worth keeping (trivial or purely exploratory chat with no outcomes, or the session already wrote its own journal entry after the user said 'log this session'):
+If there is nothing worth keeping (trivial or purely exploratory chat with no outcomes, or the session already wrote its own journal entry after the user said 'log this session'), output only the line:
 NOTHING_TO_LOG
 
-Format 2:
+Otherwise output the entry between these exact marker lines (markers alone on their lines, plain text, no bold or extra punctuation):
+BEGIN_PROPOSAL
 PROJECT: <short-kebab-case-project-name>
----
 ### Session summary (auto-drafted)
 <concise markdown bullets: outcomes, decisions, open loops>
+END_PROPOSAL
 
-Optionally end Format 2 with a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects) or LOCAL (about this one project only).
+Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects) or LOCAL (about this one project only).
 
-Rules: infer PROJECT from the working directory and content, 'general' if unclear; never invent facts not in the conversation; at most 30 lines total."
+Rules: infer PROJECT from the working directory and content, 'general' if unclear; never invent facts not in the conversation; at most 30 lines between the markers; no text outside the markers."
 
 OUTPUT="$(MY_CLAUDE_ASSISTANT_JOURNALER=1 "$CLAUDE_BIN" -p "$PROMPT" --model haiku --settings '{"disableAllHooks": true}' < "$CONVO_FILE" 2>>"$LOG")" || {
   log "summarizer run failed — skipped"; rm -f "$CONVO_FILE"; exit 0;
 }
 rm -f "$CONVO_FILE"
 
-case "$(printf '%s' "$OUTPUT" | head -1 | tr -d '[:space:]')" in
-  ""|NOTHING_TO_LOG) log "nothing to log for session in ${SESSION_CWD:-unknown}"; exit 0 ;;
-esac
-
-PROJECT="$(printf '%s\n' "$OUTPUT" | sed -n 's/^PROJECT:[[:space:]]*//p' | head -1 \
+# Parse defensively — small models drift from the format (add preamble,
+# bold the markers, emit both formats at once). The markers decide:
+# BEGIN_PROPOSAL present → it's a proposal (a stray NOTHING_TO_LOG
+# elsewhere is ignored); no markers → only then does NOTHING_TO_LOG count;
+# neither → refuse to file garbage.
+BODY="$(printf '%s\n' "$OUTPUT" | awk '/BEGIN_PROPOSAL/{f=1;next} /END_PROPOSAL/{f=0} f' \
+        | grep -v -i '^[*_# ]*PROJECT[:* ]')"
+if [ -z "$BODY" ]; then
+  if printf '%s' "$OUTPUT" | grep -q 'NOTHING_TO_LOG'; then
+    log "nothing to log for session in ${SESSION_CWD:-unknown}"
+  else
+    log "summarizer output unparseable — skipped (no markers, no NOTHING_TO_LOG)"
+  fi
+  exit 0
+fi
+PROJECT="$(printf '%s\n' "$OUTPUT" | sed -n 's/^[*_# ]*[Pp][Rr][Oo][Jj][Ee][Cc][Tt][:* ][:* ]*//p' | head -1 \
            | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9-' '-' | sed 's/^-*//;s/-*$//')"
 [ -n "$PROJECT" ] || PROJECT="general"
-BODY="$(printf '%s\n' "$OUTPUT" | sed '1,/^---$/d')"
-[ -n "$BODY" ] || BODY="$OUTPUT"
 
 # 4. Write the proposal and commit it.
 PROPOSAL="$ASSISTANT_DIR/memory/proposals/$(date +%F-%H%M%S)-$PROJECT.md"
