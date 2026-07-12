@@ -151,28 +151,41 @@ Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection w
 - Why: the concrete mistake it prevents, from this session
 Write for a reader who did NOT see this session: no shorthand, no jargon left unexplained, full sentences. A lesson that merely describes what happened, or that can't be made self-explanatory, must be left out.
 
-Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of the user's canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 40 lines between the markers; no text outside the markers."
+Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of these canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 40 lines between the markers; no text outside the markers."
 
-OUTPUT="$(MY_CLAUDE_ASSISTANT_JOURNALER=1 "$CLAUDE_BIN" -p "$PROMPT" --model haiku --settings '{"disableAllHooks": true}' < "$CONVO_FILE" 2>>"$LOG")" || {
-  log "summarizer run failed — skipped"; rm -f "$CONVO_FILE"; exit 0;
-}
+# One self-contained prompt: instructions, then the transcript between
+# markers, then a closing reminder. Splitting them (prompt as argument,
+# transcript on stdin) made the model treat the transcript as a message
+# to answer rather than data to summarize.
+FULL_FILE="$(mktemp "${TMPDIR:-/tmp}/session-end-prompt.XXXXXX")" || { rm -f "$CONVO_FILE"; exit 0; }
+{
+  printf '%s\n\n=== SESSION TRANSCRIPT START ===\n' "$PROMPT"
+  cat "$CONVO_FILE"
+  printf '\n=== SESSION TRANSCRIPT END ===\n\nNow reply exactly per the instructions above: either the single line NOTHING_TO_LOG, or the entry between BEGIN_PROPOSAL and END_PROPOSAL markers. No other text.\n'
+} > "$FULL_FILE"
 rm -f "$CONVO_FILE"
 
 # Parse defensively — small models drift from the format (add preamble,
-# bold the markers, emit both formats at once). The markers decide:
-# BEGIN_PROPOSAL present → it's a proposal (a stray NOTHING_TO_LOG
-# elsewhere is ignored); no markers → only then does NOTHING_TO_LOG count;
-# neither → refuse to file garbage.
-BODY="$(printf '%s\n' "$OUTPUT" | awk '/BEGIN_PROPOSAL/{f=1;next} /END_PROPOSAL/{f=0} f' \
-        | grep -v -i '^[*_# ]*PROJECT[:* ]')"
-if [ -z "$BODY" ]; then
+# bold the markers, emit both formats at once, return nothing). The
+# markers decide: BEGIN_PROPOSAL present → it's a proposal (a stray
+# NOTHING_TO_LOG elsewhere is ignored); no markers → only then does
+# NOTHING_TO_LOG count; neither → retry once, then refuse to file garbage.
+BODY=""
+for ATTEMPT in 1 2; do
+  OUTPUT="$(MY_CLAUDE_ASSISTANT_JOURNALER=1 "$CLAUDE_BIN" -p --model haiku --settings '{"disableAllHooks": true}' < "$FULL_FILE" 2>>"$LOG")" || {
+    log "summarizer run failed (attempt $ATTEMPT)"; continue;
+  }
+  BODY="$(printf '%s\n' "$OUTPUT" | awk '/BEGIN_PROPOSAL/{f=1;next} /END_PROPOSAL/{f=0} f' \
+          | grep -v -i '^[*_# ]*PROJECT[:* ]')"
+  [ -n "$BODY" ] && break
   if printf '%s' "$OUTPUT" | grep -q 'NOTHING_TO_LOG'; then
     log "nothing to log for session in ${SESSION_CWD:-unknown}"
-  else
-    log "summarizer output unparseable — skipped (no markers, no NOTHING_TO_LOG); raw head: $(printf '%s' "$OUTPUT" | head -c 400 | tr '\n' ' ')"
+    rm -f "$FULL_FILE"; exit 0
   fi
-  exit 0
-fi
+  log "summarizer output unparseable (attempt $ATTEMPT); raw head: $(printf '%s' "$OUTPUT" | head -c 400 | tr '\n' ' ')"
+done
+rm -f "$FULL_FILE"
+[ -n "$BODY" ] || { log "giving up on this session — nothing filed"; exit 0; }
 PROJECT="$(printf '%s\n' "$OUTPUT" | sed -n 's/^[*_# ]*[Pp][Rr][Oo][Jj][Ee][Cc][Tt][:* ][:* ]*//p' | head -1 \
            | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9-' '-' | sed 's/^-*//;s/-*$//')"
 [ -n "$PROJECT" ] || PROJECT="general"
