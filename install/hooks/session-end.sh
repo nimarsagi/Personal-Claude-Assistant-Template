@@ -130,6 +130,8 @@ fi
 # text; this script does all file writes itself.
 CLAUDE_BIN="$(command -v claude || echo "$HOME/.npm-global/bin/claude")"
 TODAY="$(date +%F)"
+# The user's canonical journal domains, if setup recorded them.
+DOMAINS="$(grep -i 'journal domains:' "$ASSISTANT_DIR/memory/MEMORY.md" 2>/dev/null | head -1 | sed 's/.*[Dd]omains:[[:space:]]*//')"
 PROMPT="You are the background journaler for a personal Claude assistant. Below is the conversation from a Claude Code session that just ended (working directory: ${SESSION_CWD:-unknown}, date: $TODAY). Draft a journal entry of what future sessions would need: outcomes, decisions, open loops.
 
 If there is nothing worth keeping (trivial or purely exploratory chat with no outcomes, or the session already wrote its own journal entry after the user said 'log this session'), output only the line:
@@ -142,9 +144,9 @@ PROJECT: <short-kebab-case-project-name>
 <concise markdown bullets: outcomes, decisions, open loops>
 END_PROPOSAL
 
-Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects) or LOCAL (about this one project only).
+Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects), DOMAIN (one standing domain of the user's work), or LOCAL (this one project only).
 
-Rules: infer PROJECT from the working directory and content, 'general' if unclear; never invent facts not in the conversation; at most 30 lines between the markers; no text outside the markers."
+Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of the user's canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 30 lines between the markers; no text outside the markers."
 
 OUTPUT="$(MY_CLAUDE_ASSISTANT_JOURNALER=1 "$CLAUDE_BIN" -p "$PROMPT" --model haiku --settings '{"disableAllHooks": true}' < "$CONVO_FILE" 2>>"$LOG")" || {
   log "summarizer run failed — skipped"; rm -f "$CONVO_FILE"; exit 0;

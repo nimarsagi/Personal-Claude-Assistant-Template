@@ -28,6 +28,9 @@ user in one line instead of silently repeating the stale version.
   that hold across every project. Read in full at boot.
 - `memory/journal/<project>/YYYY-MM-DD.md` — per-project session history;
   on demand only (see "Reading journals").
+- `memory/lessons/<domain>.md` — lessons scoped to one standing domain of
+  the user's work (spans many projects, but not all). Read when the task
+  clearly falls in that domain — not at boot.
 - `memory/proposals/` — journal-entry drafts written by the Phase 2
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
@@ -62,7 +65,9 @@ right tool when the user wants an entry written immediately and directly.
 When the user says "log this session" (or equivalent): determine the
 project from working directory / session content, and append outcomes,
 decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
-- A new project name creates a new subfolder on first use.
+- Prefer the canonical names in MEMORY.md's "Journal domains:" line when
+  one fits; a genuinely new project name creates a new subfolder on
+  first use — say so in one line when that happens.
 - No clear project → memory/journal/general/.
 - A session touching two projects → ask in one line which to file under
   (or split the entry, writing only the relevant material to each).
@@ -111,15 +116,20 @@ Claude and asks to keep it: distill it to a one-line rule, classify it:
 - GLOBAL (about the user — preferences, working style, standing
   decisions, true across all projects) → propose an addition to USER.md
   or memory/MEMORY.md in this folder.
-- LOCAL (about one workflow/project — conventions, paths, domain rules)
+- DOMAIN (about one standing domain of the user's work — true across the
+  many projects inside it, e.g. a rule for every client engagement) →
+  propose an addition to memory/lessons/<domain>.md in this folder,
+  using the canonical names from MEMORY.md's "Journal domains:" line.
+- LOCAL (about one workflow/project — conventions, paths, project rules)
   → propose an addition to that project's own CLAUDE.md/CONTEXT.md, never
   this folder's memory. If the project has neither file, propose creating
   CLAUDE.md at its root with just this rule.
-- When unsure, propose LOCAL.
+- When unsure, propose the narrowest tier that fits: LOCAL over DOMAIN
+  over GLOBAL.
 Show the exact proposed text and destination. Do not capture lessons
-unprompted. After an approved GLOBAL write lands in this folder, git
-commit it here (LOCAL writes belong to that project's own version
-control, not this folder's).
+unprompted. After an approved GLOBAL or DOMAIN write lands in this
+folder, git commit it here (LOCAL writes belong to that project's own
+version control, not this folder's).
 
 ## Standing rules
 - Approval gates on memory writes, not on action: background/autonomous

@@ -34,6 +34,14 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
 4. Show the confirmed entries for USER.md and memory/MEMORY.md and get an
    explicit yes before writing. Keep each file to max 40 lines,
    purpose-not-inventory — facts and conventions, not example content.
+   As part of the same confirmation, distill the recurring-projects
+   answer into a short canonical list of journal DOMAINS (kebab-case
+   folder names, typically 3–6). On the user's yes: add one line to
+   memory/MEMORY.md — `Journal domains: <a>, <b>, <c>` — and create
+   memory/journal/<domain>/ for each (holding an empty .gitkeep so git
+   keeps the folder). These names anchor journal routing and domain
+   lessons from day one (see CLAUDE.md); without them every session
+   invents its own folder names and the journal fragments.
 5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
    it asserts that ALL steps above ran, including the step-3 interview;
    if the interview did not happen, setup is not done and this file must
@@ -41,7 +49,8 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    (1: import checked, 2: known context surfaced, 3: interview held,
    4: entries approved and written).
 6. Git commit the result in this folder — the populated USER.md and
-   memory/MEMORY.md plus this file's deletion, one commit. That commit is
+   memory/MEMORY.md, the domain folders, plus this file's deletion, one
+   commit. That commit is
    the baseline snapshot of the user's memory; without it the personalized
    files sit uncommitted, with no history and no recovery. If git refuses
    because no identity is configured (fresh machine: user.name/user.email

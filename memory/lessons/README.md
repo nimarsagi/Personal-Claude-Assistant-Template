@@ -1,0 +1,1 @@
+Domain-scoped lessons live here, one file per standing domain of the user's work (`<domain>.md`, names from MEMORY.md's "Journal domains:" line). A domain lesson is true across the many projects inside one area — broader than one project, narrower than the user. Written only via the approval-gated lesson capture in CLAUDE.md; read when work clearly falls in that domain.

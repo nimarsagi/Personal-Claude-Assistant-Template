@@ -65,8 +65,8 @@ top of `CLAUDE.md`).
 - **"log this session"** — appends outcomes/decisions/open loops to
   `memory/journal/<project>/YYYY-MM-DD.md`.
 - **"remember this"** — captures a lesson, proposes where it belongs
-  (global memory vs. that project's own CLAUDE.md), writes only on your
-  explicit yes.
+  (global memory, a domain lessons file, or that project's own
+  CLAUDE.md), writes only on your explicit yes.
 - **"where did we leave off?"** — pulls recent journal entries for the
   current project.
 - **"review proposals"** — walks through auto-drafted journal entries
@@ -127,7 +127,8 @@ The limit is coverage: the journal only knows what got logged.
 |---|---|
 | `CLAUDE.md` | Boot protocol Claude follows every session |
 | `USER.md`, `memory/MEMORY.md` | Your user model and global memory (filled by setup) |
-| `memory/journal/` | Per-project session logs |
+| `memory/journal/` | Per-project session logs (domain folders created by setup) |
+| `memory/lessons/` | Domain-scoped lessons — rules spanning one area of your work |
 | `memory/proposals/` | Approval inbox for auto-drafted journal entries |
 | `INSTALL.md` | Pointer install + optional hook install — the only steps that edit outside this folder |
 | `SETUP.md` | First-run interview; deletes itself when done |
