@@ -195,8 +195,8 @@ PROPOSAL="$ASSISTANT_DIR/memory/proposals/$(date +%F-%H%M%S)-$PROJECT.md"
 {
   echo "# Journal proposal — pending review"
   echo "- Session ended: $(date '+%F %T') (cwd: ${SESSION_CWD:-unknown})"
-  echo "- Proposed destination: memory/journal/$PROJECT/$TODAY.md (a"
-  echo "  suggestion — confirm or re-route at review)"
+  echo "- Proposed destination: memory/journal/$PROJECT/sessions/$TODAY.md"
+  echo "  (a suggestion — confirm or re-route at review)"
   echo "- Auto-drafted by the session-end hook; nothing files itself —"
   echo "  approve, edit, or reject via \"review proposals\"."
   echo

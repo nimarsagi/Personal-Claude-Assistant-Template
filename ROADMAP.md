@@ -84,7 +84,8 @@ GLOBAL (about the user: preferences, working style, standing decisions)
 routes to this folder's MEMORY.md or USER.md and follows the user into
 every session. DOMAIN (true across the many projects inside one standing
 domain of the user's work, e.g. every client engagement) routes to this
-folder's memory/lessons/<domain>.md, read when working in that domain.
+folder's memory/journal/<domain>/lessons/LESSONS.md, read when working
+in that domain.
 LOCAL (about one workflow or project: its conventions, paths, project
 rules) routes to that project's own CLAUDE.md/CONTEXT.md and never
 enters this folder's memory. Every proposal states its classification

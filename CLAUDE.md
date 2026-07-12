@@ -26,11 +26,11 @@ user in one line instead of silently repeating the stale version.
   recurring projects, goals. Read in full at boot.
 - `memory/MEMORY.md` — curated GLOBAL facts, feedback, and references
   that hold across every project. Read in full at boot.
-- `memory/journal/<project>/YYYY-MM-DD.md` — per-project session history;
-  on demand only (see "Reading journals").
-- `memory/lessons/<domain>.md` — lessons scoped to one standing domain of
-  the user's work (spans many projects, but not all). Read when the task
-  clearly falls in that domain — not at boot.
+- `memory/journal/<project>/sessions/YYYY-MM-DD.md` — dated session
+  history per project/domain; on demand only (see "Reading journals").
+- `memory/journal/<domain>/lessons/LESSONS.md` — key lessons for that
+  domain (rules spanning its many projects, but not all of the user's
+  work). Read when the task clearly falls in that domain — not at boot.
 - `memory/proposals/` — journal-entry drafts written by the Phase 2
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
@@ -64,7 +64,8 @@ longer loses the session. The manual trigger below still works and is the
 right tool when the user wants an entry written immediately and directly.
 When the user says "log this session" (or equivalent): determine the
 project from working directory / session content, and append outcomes,
-decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
+decisions, and open loops to
+memory/journal/<project>/sessions/YYYY-MM-DD.md.
 - Prefer the canonical names in MEMORY.md's "Journal domains:" line when
   one fits; a genuinely new project name creates a new subfolder on
   first use — say so in one line when that happens.
@@ -104,9 +105,10 @@ Pull journal history when the user asks a continuity question ("where did
 we leave off", "what did we decide about X", "catch me up on <project>")
 or when the task clearly depends on prior decisions in a known project.
 - Determine the project the same way as at write time.
-- Read only that project's folder, most recent entries first: at most
-  the 5 newest entries, and none older than 14 days — both caps apply —
-  unless asked for more.
+- Read only that project's sessions/ folder, most recent entries first:
+  at most the 5 newest entries, and none older than 14 days — both caps
+  apply — unless asked for more. Consult its lessons/ file too when the
+  task is about how to work in that domain, not just what happened.
 - No clear project (e.g. an unrelated folder): find the journal folder
   with the most recently modified entry (general/ counts like any other —
   recency beats folder-guessing), answer from it, and name which folder
@@ -132,7 +134,7 @@ lesson — sharpen it or drop it. Then classify it:
   or memory/MEMORY.md in this folder.
 - DOMAIN (about one standing domain of the user's work — true across the
   many projects inside it, e.g. a rule for every client engagement) →
-  propose an addition to memory/lessons/<domain>.md in this folder,
+  propose an addition to memory/journal/<domain>/lessons/LESSONS.md,
   using the canonical names from MEMORY.md's "Journal domains:" line.
 - LOCAL (about one workflow/project — conventions, paths, project rules)
   → propose an addition to that project's own CLAUDE.md/CONTEXT.md, never

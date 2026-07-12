@@ -38,10 +38,12 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    answer into a short canonical list of journal DOMAINS (kebab-case
    folder names, typically 3–6). On the user's yes: add one line to
    memory/MEMORY.md — `Journal domains: <a>, <b>, <c>` — and create
-   memory/journal/<domain>/ for each (holding an empty .gitkeep so git
-   keeps the folder). These names anchor journal routing and domain
-   lessons from day one (see CLAUDE.md); without them every session
-   invents its own folder names and the journal fragments.
+   memory/journal/<domain>/sessions/ and memory/journal/<domain>/lessons/
+   for each (each holding an empty .gitkeep so git keeps the folders):
+   sessions/ receives the dated entries, lessons/ the domain's key rules.
+   These names anchor journal routing and domain lessons from day one
+   (see CLAUDE.md); without them every session invents its own folder
+   names and the journal fragments.
 5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
    it asserts that ALL steps above ran, including the step-3 interview;
    if the interview did not happen, setup is not done and this file must

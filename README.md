@@ -127,8 +127,7 @@ The limit is coverage: the journal only knows what got logged.
 |---|---|
 | `CLAUDE.md` | Boot protocol Claude follows every session |
 | `USER.md`, `memory/MEMORY.md` | Your user model and global memory (filled by setup) |
-| `memory/journal/` | Per-project session logs (domain folders created by setup) |
-| `memory/lessons/` | Domain-scoped lessons — rules spanning one area of your work |
+| `memory/journal/<domain>/` | Per-domain `sessions/` (dated logs) + `lessons/` (key rules for that area) |
 | `memory/proposals/` | Approval inbox for auto-drafted journal entries |
 | `INSTALL.md` | Pointer install + optional hook install — the only steps that edit outside this folder |
 | `SETUP.md` | First-run interview; deletes itself when done |

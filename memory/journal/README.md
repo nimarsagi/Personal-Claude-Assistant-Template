@@ -1,1 +1,1 @@
-Per-project journal subfolders (journal/<project>/YYYY-MM-DD.md), created on first use — see this folder's CLAUDE.md for write/read routing rules.
+One subfolder per project/domain (canonical names come from setup, recorded in MEMORY.md; new ones are created on first use). Each holds two folders: `sessions/` — dated entries (YYYY-MM-DD.md), the memory of the work itself — and `lessons/` — LESSONS.md, the key rules distilled from that work (Rule/When/Why format). See this folder's CLAUDE.md for write/read routing rules.
