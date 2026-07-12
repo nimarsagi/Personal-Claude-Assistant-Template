@@ -144,7 +144,7 @@ PROJECT: <short-kebab-case-project-name>
 <concise markdown bullets: outcomes, decisions, open loops>
 END_PROPOSAL
 
-Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects), DOMAIN (one standing domain of the user's work), or LOCAL (this one project only).
+Optionally include, before END_PROPOSAL, a '#### Candidate lessons' subsection: one-line durable rules learned this session, each prefixed GLOBAL (about the user, true across all projects), DOMAIN (one standing domain of the user's work), or LOCAL (this one project only). Every lesson must be an instruction a future session can act on — 'when <situation>, do/avoid <behavior> (why: <the mistake it prevents>)' — never a mere description of what happened; if it can't be phrased that way, leave it out.
 
 Rules: infer PROJECT from the working directory and content${DOMAINS:+ — prefer one of the user's canonical domains when it fits: $DOMAINS}, 'general' if unclear; never invent facts not in the conversation; at most 30 lines between the markers; no text outside the markers."
 
@@ -177,7 +177,8 @@ PROPOSAL="$ASSISTANT_DIR/memory/proposals/$(date +%F-%H%M%S)-$PROJECT.md"
 {
   echo "# Journal proposal — pending review"
   echo "- Session ended: $(date '+%F %T') (cwd: ${SESSION_CWD:-unknown})"
-  echo "- Proposed destination: memory/journal/$PROJECT/$TODAY.md"
+  echo "- Proposed destination: memory/journal/$PROJECT/$TODAY.md (a"
+  echo "  suggestion — confirm or re-route at review)"
   echo "- Auto-drafted by the session-end hook; nothing files itself —"
   echo "  approve, edit, or reject via \"review proposals\"."
   echo

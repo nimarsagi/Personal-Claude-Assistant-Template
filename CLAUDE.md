@@ -68,6 +68,8 @@ decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
 - Prefer the canonical names in MEMORY.md's "Journal domains:" line when
   one fits; a genuinely new project name creates a new subfolder on
   first use — say so in one line when that happens.
+- Before writing, name the destination in one line ("filing under
+  consultancy — ok?") and get a yes; the user re-routes with a word.
 - No clear project → memory/journal/general/.
 - A session touching two projects → ask in one line which to file under
   (or split the entry, writing only the relevant material to each).
@@ -80,7 +82,11 @@ decisions, and open loops to memory/journal/<project>/YYYY-MM-DD.md.
 When the user says "review proposals" (or responds to the boot-time
 mention of pending ones): for each proposal file in memory/proposals/
 (its README isn't one), show the draft entry and its proposed destination
-journal file, then ask — approve, edit, or reject.
+journal file, then ask — approve, edit, or reject. The destination is
+itself only a suggestion: say in one line why that folder fits and name
+the plausible alternative if there is one. Approval covers BOTH content
+and destination — never file to a folder the user hasn't confirmed; they
+can re-route to any folder with a word.
 - Approve → append the entry to memory/journal/<project>/<date>.md and
   delete the proposal file. Apply the same routing scrutiny as a manual
   log: if the proposed project looks wrong, say so instead of filing.
@@ -112,7 +118,11 @@ or when the task clearly depends on prior decisions in a known project.
 
 ## Lesson capture (user-triggered)
 When the user says "remember this" / "capture that lesson", or corrects
-Claude and asks to keep it: distill it to a one-line rule, classify it:
+Claude and asks to keep it: distill it to a one-line INSTRUCTION a future
+session can act on — when <situation>, do/avoid <behavior> (why: <the
+mistake it prevents>). A lesson that only describes what happened tells a
+future session nothing; sharpen it into what to do differently or drop
+it. Then classify it:
 - GLOBAL (about the user — preferences, working style, standing
   decisions, true across all projects) → propose an addition to USER.md
   or memory/MEMORY.md in this folder.
