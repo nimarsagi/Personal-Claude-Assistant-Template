@@ -43,9 +43,11 @@ if [ "${1:-}" != "--detached" ]; then
   esac
 
   # Same guard as the boot protocol: run only as the installed live
-  # assistant — the path named in ~/.claude/CLAUDE.md's pointer block.
-  # A source/dev checkout of the template must never commit or write here.
-  if ! grep -Fq "$ASSISTANT_DIR" "$HOME/.claude/CLAUDE.md" 2>/dev/null; then
+  # assistant — the path named in ~/.claude/CLAUDE.md's pointer block,
+  # which may be written absolute or ~-relative. A source/dev checkout
+  # of the template must never commit or write here.
+  if ! grep -Fq "$ASSISTANT_DIR" "$HOME/.claude/CLAUDE.md" 2>/dev/null \
+     && ! grep -Fq "~${ASSISTANT_DIR#"$HOME"}" "$HOME/.claude/CLAUDE.md" 2>/dev/null; then
     rm -f "$INPUT_FILE"; exit 0
   fi
 
