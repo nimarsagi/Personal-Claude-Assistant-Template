@@ -115,9 +115,10 @@ show, validate).
 ## Skill install — general skills (optional, run once per skill)
 
 Run this only when the user asks for it (e.g. "install the lesson-capture
-skill" / "install the skill-forge skill"), after the pointer install is
-done. Two general skills ship today: `lesson-capture` (Phase 3) and
-`skill-forge` (Phase 4), both in `install/general_skills/`. The steps
+skill" / "install the skill-forge skill" / "install the memory-gardener
+skill"), after the pointer install is done. Three general skills ship
+today: `lesson-capture` (Phase 3), `skill-forge` (Phase 4), and
+`memory-gardener` (Phase 5), all in `install/general_skills/`. The steps
 below are written for lesson-capture; for any other general skill,
 substitute its folder name throughout. Installing makes the skill
 ambient — loaded in every session, any folder — by symlinking it into

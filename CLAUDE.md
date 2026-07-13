@@ -37,12 +37,17 @@ user in one line instead of silently repeating the stale version.
 - `memory/proposals/` — journal-entry drafts written by the Phase 2
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
+- `memory/consolidation-log.md` — one dated line per gardener run
+  (see "Consolidation"); boot reads only its last line to decide
+  whether consolidation is overdue.
 - `ROADMAP.md` — phase plan; read only when phase status or design intent
-  is in question. Phases 0–4 are live: journaling happens both manually
+  is in question. Phases 0–5 are live: journaling happens both manually
   and via the background hook; lesson capture is manual AND skill-noticed
   once the lesson-capture skill is installed (see "Lesson capture");
   hard-won solutions become reusable skills manually AND skill-noticed
-  once the skill-forge skill is installed (see "Skill forge").
+  once the skill-forge skill is installed (see "Skill forge"); memory
+  consolidation is manual via the memory-gardener skill (see
+  "Consolidation").
 - `INSTALL.md` / `SETUP.md` / `install/` — install-time only; each
   explains itself. SETUP.md deletes itself when first-run setup is done.
 
@@ -62,6 +67,10 @@ c. If memory/proposals/ contains any files besides its own README,
    act on them unprompted.
 d. Do NOT read journal files at boot; they load on demand only (see
    "Reading journals").
+e. Read the LAST line of memory/consolidation-log.md. If its date is
+   more than 7 days old, or the file is missing or has no dated lines,
+   mention in one line that memory consolidation is overdue (see
+   "Consolidation") — mention only, never run it unprompted.
 
 ## Logging a session (user-triggered)
 If the Phase 2 session-end hook is installed, every session is drafted
@@ -207,6 +216,41 @@ solution.
   the exact symlink command per "Managing skills" below (general →
   ~/.claude/skills/, domain → that project's .claude/skills/) and get
   a yes before creating it.
+
+## Consolidation (user-triggered)
+The gardener: merges journal themes into curated memory, prunes stale
+rules, enforces the page caps. Runs ONLY when the user asks
+("consolidate memory", "run the gardener", or a yes to the boot-time
+overdue mention) — the boot nudge mentions, never runs. Weekly is the
+intended cadence.
+- Step 0: if memory/proposals/ has pending items, recommend "review
+  proposals" first — unreviewed proposals are unconsolidated input;
+  never process them as part of gardening.
+- **Read**: MEMORY.md and USER.md (already loaded at boot), every
+  domain's lessons/LESSONS.md, and journal sessions across ALL domains
+  since the last consolidation-log entry (no log yet → last 30 days).
+  This cross-folder read is sanctioned here because consolidation is an
+  explicitly requested audit — the "unless explicitly asked" case of
+  "Reading journals".
+- **Identify**, in one report: (a) recurring themes worth promoting
+  from journal into curated memory, classified GLOBAL / DOMAIN / LOCAL
+  by the lesson-routing rules (LOCAL findings point at that project's
+  own CLAUDE.md, never this folder's memory); (b) stale or contradicted
+  rules to prune; (c) near-duplicate rules to merge; (d) misrouted
+  content — project rules sitting in MEMORY.md, user-level facts buried
+  in a LESSONS.md; (e) cap pressure — MEMORY.md and USER.md must end at
+  40 lines or fewer after the proposed edits.
+- **Propose as diffs**: for each file, show the exact before/after. The
+  user approves, edits, or rejects PER FILE; nothing is written without
+  an explicit yes covering that file's diff.
+- **Afterwards**: git commit the approved writes in this folder, then
+  append one line to memory/consolidation-log.md —
+  `YYYY-MM-DD — <one-line summary>` (or "no changes") — and commit
+  that too. The line is written even on a no-changes run, so the
+  overdue nudge resets.
+- **Never**: edit journal sessions/ files or proposals/ (the historical
+  record and the review queue are read-only input here); rewrite or
+  delete consolidation-log.md history — append only.
 
 ## Managing skills
 Skills have two homes, and where a skill is SYMLINKED — not where it

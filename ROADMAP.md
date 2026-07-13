@@ -1,7 +1,8 @@
 # Roadmap
 
 The full plan for My Claude Assistant, so each phase is designed with the
-end-state in mind. Phases 0–4 are built/live today.
+end-state in mind. Phases 0–5 are built/live today (Phase 5 in its
+manual mode; its scheduled headless run is still deferred).
 
 ## Phase 0–1 (built)
 Scaffold + boot protocol + first-run setup. Memory files load in every
@@ -90,10 +91,31 @@ Build notes, where reality amended the original sketch:
   (same situation as the lesson-capture skill) — it waits for a real
   session that re-solves a journaled problem the hard way.
 
-## Phase 5 — consolidation
+## Phase 5 — consolidation (built 2026-07-13 — manual mode)
 Periodic gardener-style audit merges journal themes into MEMORY.md,
 prunes stale rules, enforces page limits. Manual weekly at first; later
 a scheduled headless run.
+Build notes, where reality amended the original sketch:
+- Same thin-skill structure as Phases 3–4: SKILL.md
+  (install/general_skills/memory-gardener/) owns only the trigger; the
+  whole procedure lives in CLAUDE.md's "Consolidation" section.
+- Explicit trigger ONLY — no unprompted noticing at all. "Weekly" is
+  made real by a boot nudge instead: the gardener appends one dated
+  line to memory/consolidation-log.md after every run (even no-change
+  runs), and boot step (e) mentions — never runs — consolidation when
+  that log's last line is older than 7 days or missing.
+- Prune scope is curated files only: MEMORY.md, USER.md, and domain
+  LESSONS.md files. Journal sessions and proposals are read-only input,
+  per the standing principle against autonomous edits of the historical
+  record. Everything is proposed as per-file before/after diffs,
+  approved per file.
+- The gardener's read is the sanctioned cross-folder case: an
+  explicitly requested audit reads sessions across ALL domains since
+  the last log entry (fallback: 30 days).
+- The scheduled headless run remains DEFERRED. Design note for when
+  it's built: follow the Phase 2 hook pattern — a scheduled run drafts
+  a consolidation PROPOSAL into memory/proposals/ for review at next
+  boot; it never writes final memory, keeping the approval gate intact.
 
 ## Skills architecture (applies to Phase 3–4)
 Skills follow the same source-vs-install split as memory, with TWO
