@@ -72,7 +72,13 @@ top of `CLAUDE.md`).
   `memory/journal/<project>/YYYY-MM-DD.md`.
 - **"remember this"** — captures a lesson, proposes where it belongs
   (global memory, a domain lessons file, or that project's own
-  CLAUDE.md), writes only on your explicit yes.
+  CLAUDE.md), writes only on your explicit yes. If the lesson-capture
+  skill (install step 5) is on, it also tries to notice on its own when
+  a correction implies a standing rule — but that recognition isn't
+  guaranteed for naturally-phrased corrections. For a recurring problem
+  you want reliably caught, say it explicitly: "always...", "never...",
+  or "remember this" — don't rely on it being inferred from ordinary
+  wording.
 - **"where did we leave off?"** — pulls recent journal entries for the
   current project.
 - **"review proposals"** — walks through auto-drafted journal entries

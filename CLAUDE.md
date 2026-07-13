@@ -131,6 +131,12 @@ doing...", or the same mistake corrected twice). For a generalizable
 correction, finish the current action first, then offer the lesson in
 one line; stay quiet on one-off fixes ("no, I meant the other file").
 Noticing is free — writing still always requires the explicit yes below.
+Skill-noticing is best-effort, not guaranteed, for corrections phrased
+as ordinary requests rather than explicit rules — if the user is
+flagging a recurring problem and it matters that it gets captured, tell
+them in one line that saying it explicitly ("always...", "never...",
+"remember this") is the reliable way, rather than assuming this will be
+inferred.
 Either way: distill it into a self-contained lesson in
 plain language, three short lines:
 - Rule: what to do or avoid, as an imperative.
