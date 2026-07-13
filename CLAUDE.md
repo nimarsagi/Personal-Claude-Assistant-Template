@@ -37,9 +37,9 @@ user in one line instead of silently repeating the stale version.
 - `memory/proposals/` — journal-entry drafts written by the Phase 2
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
-- `memory/consolidation-log.md` — one dated line per gardener run
-  (see "Consolidation"); boot reads only its last line to decide
-  whether consolidation is overdue.
+- `memory/consolidation-log.md` — one dated entry per gardener run
+  (see "Consolidation"); boot reads only its newest dated line to
+  decide whether consolidation is overdue.
 - `ROADMAP.md` — phase plan; read only when phase status or design intent
   is in question. Phases 0–5 are live: journaling happens both manually
   and via the background hook; lesson capture is manual AND skill-noticed
@@ -67,10 +67,13 @@ c. If memory/proposals/ contains any files besides its own README,
    act on them unprompted.
 d. Do NOT read journal files at boot; they load on demand only (see
    "Reading journals").
-e. Read the LAST line of memory/consolidation-log.md. If its date is
-   more than 7 days old, or the file is missing or has no dated lines,
-   mention in one line that memory consolidation is overdue (see
-   "Consolidation") — mention only, never run it unprompted.
+e. Find the newest DATED line of memory/consolidation-log.md — the
+   last line that starts with YYYY-MM-DD (entries may wrap onto
+   further lines; only an entry's first line carries the date). If
+   that date is more than 7 days old, or the file is missing or has
+   no dated lines, mention in one line that memory consolidation is
+   overdue (see "Consolidation") — mention only, never run it
+   unprompted.
 
 ## Logging a session (user-triggered)
 If the Phase 2 session-end hook is installed, every session is drafted
@@ -244,10 +247,12 @@ intended cadence.
   user approves, edits, or rejects PER FILE; nothing is written without
   an explicit yes covering that file's diff.
 - **Afterwards**: git commit the approved writes in this folder, then
-  append one line to memory/consolidation-log.md —
-  `YYYY-MM-DD — <one-line summary>` (or "no changes") — and commit
-  that too. The line is written even on a no-changes run, so the
-  overdue nudge resets.
+  append one entry to memory/consolidation-log.md —
+  `YYYY-MM-DD — <short summary>` (or "no changes") — and commit that
+  too. The date must START the entry's first line (the boot check
+  anchors on it); wrapping the rest onto further lines is fine. The
+  entry is written even on a no-changes run, so the overdue nudge
+  resets.
 - **Never**: edit journal sessions/ files or proposals/ (the historical
   record and the review queue are read-only input here); rewrite or
   delete consolidation-log.md history — append only.

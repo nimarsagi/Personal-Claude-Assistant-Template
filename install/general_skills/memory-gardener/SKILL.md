@@ -35,9 +35,9 @@ promote (routed GLOBAL / DOMAIN / LOCAL), stale rules to prune,
 duplicates to merge, misrouted content, and cap pressure (MEMORY.md and
 USER.md must end at 40 lines or fewer); propose the result as per-file
 before/after diffs; write each file ONLY on an explicit yes for that
-file; commit, then append one dated line to memory/consolidation-log.md
-and commit that too — even on a no-changes run, so the overdue nudge
-resets.
+file; commit, then append one date-first entry (wrapping fine) to
+memory/consolidation-log.md and commit that too — even on a no-changes
+run, so the overdue nudge resets.
 
 ## Never
 - Edit journal sessions/ files or memory/proposals/ — the historical

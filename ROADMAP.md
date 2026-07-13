@@ -101,9 +101,18 @@ Build notes, where reality amended the original sketch:
   whole procedure lives in CLAUDE.md's "Consolidation" section.
 - Explicit trigger ONLY — no unprompted noticing at all. "Weekly" is
   made real by a boot nudge instead: the gardener appends one dated
-  line to memory/consolidation-log.md after every run (even no-change
+  entry to memory/consolidation-log.md after every run (even no-change
   runs), and boot step (e) mentions — never runs — consolidation when
-  that log's last line is older than 7 days or missing.
+  the log's newest dated line is older than 7 days or missing.
+- Amended after the first live run (same day): that run wrapped its
+  log entry across several lines, leaving the file's LAST physical
+  line undated — the same wrapped-line failure that once hid a domain
+  name from the session-end hook's grep. Rather than re-tightening the
+  one-physical-line rule (broken on its very first use), the CHECK was
+  made tolerant: entries are date-FIRST with wrapping allowed, and
+  boot anchors on the newest line starting with a date. When a rule
+  breaks on day one under a well-intentioned writer, fix the
+  mechanism, not the writer.
 - Prune scope is curated files only: MEMORY.md, USER.md, and domain
   LESSONS.md files. Journal sessions and proposals are read-only input,
   per the standing principle against autonomous edits of the historical
