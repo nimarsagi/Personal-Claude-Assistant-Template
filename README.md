@@ -9,6 +9,12 @@ session" to record what happened, and "where did we leave off?" to pick
 the thread back up, even weeks later. It's all plain markdown files a
 human can read, and Claude keeps them updated as you go.
 
+It doesn't just remember — it learns. Corrections you make become
+standing rules. Problems you solve the hard way become reusable skills.
+And a weekly tidy-up keeps the memory sharp instead of letting it silt
+up. Every one of those writes happens behind the same gate: nothing
+enters your memory without your explicit yes.
+
 This file is for you, the human. Everything else in here is addressed to
 Claude. **Start here; the install order below is the only part that isn't
 self-driving.**
@@ -55,11 +61,19 @@ it must stay private:
    `~/.claude/settings.json`, and it runs behind the same
    backup-show-confirm gate as step 2 (see INSTALL.md).
 
-5. Optional, any time later: say **"install the lesson-capture skill"**
-   to make Claude notice when you correct it — a correction that implies
-   a standing rule ("always ask before deleting") gets distilled into a
-   lesson and offered for saving; nothing is written without your yes.
-   This creates one symlink in `~/.claude/skills/` (see INSTALL.md).
+5. Optional, any time later: three skills, each installed by asking and
+   each just one symlink in `~/.claude/skills/` (see INSTALL.md):
+   - **"install the lesson-capture skill"** — Claude notices when you
+     correct it in a way that implies a standing rule ("always ask
+     before deleting"), distills the correction into a lesson, and
+     offers to save it.
+   - **"install the skill-forge skill"** — when a problem gets solved
+     only after several failed attempts, and your journal shows you've
+     struggled through the same thing before, Claude offers to package
+     the solution as a reusable skill — so the third time is one
+     command.
+   - **"install the memory-gardener skill"** — adds the "consolidate
+     memory" command (see Daily use) and its weekly boot reminder.
 
 Order matters: INSTALL before SETUP. Until the pointer from step 2
 exists, the boot protocol treats any copy of this folder as a source
@@ -84,6 +98,15 @@ top of `CLAUDE.md`).
 - **"review proposals"** — walks through auto-drafted journal entries
   waiting in your approval inbox (only relevant once the session-end
   hook from install step 4 is on); approve, edit, or reject each.
+- **"make this a skill"** — packages what was just done into a reusable
+  skill draft, including the dead ends to avoid, and proposes where it
+  belongs; written only on your yes.
+- **"consolidate memory"** — the weekly tidy-up: reads what the journal
+  has accumulated, then proposes — as per-file before/after diffs you
+  approve one by one — which recurring themes to promote into standing
+  memory, which stale rules to prune, which near-duplicates to merge.
+  Do "review proposals" first if the inbox has items; unreviewed drafts
+  aren't part of the record yet.
 
 ## What it does on its own
 
@@ -117,25 +140,72 @@ being asked:
   (global memory, a domain's lessons file, or that project's own
   CLAUDE.md). One-off fixes are left alone; nothing is saved without
   your yes.
+- **Notices solutions worth keeping** (skill-forge, same install step) —
+  when something got fixed only after several failed attempts AND the
+  journal shows you've hit the same problem before, it offers to package
+  the solution as a skill. A hard task done right first try, or a
+  first-ever occurrence, stays quiet — the bar is a proven repeat.
+- **Reminds you to tidy up** — if the last consolidation run is more
+  than a week old, the next session mentions it in one line. Mentions
+  only; the tidy-up itself never runs without you asking.
 
-What it deliberately does NOT do on its own (yet): package your repeated
-solutions into new skills — that's Phase 4 in ROADMAP.md.
+## The nuances — how it's designed
 
-## Where it's headed
+A few deliberate choices explain most of how this thing behaves:
 
-The later phases (see ROADMAP.md) make the assistant progressively more
-self-driving, always behind the same approval gate:
+**The learning loop.** Raw history flows upward through four stages,
+each more distilled than the last: sessions get *journaled* (the raw
+record), corrections get *distilled into lessons* (standing rules),
+repeated hard-won solutions get *packaged as skills* (reusable
+procedures), and the gardener periodically *consolidates* the
+accumulation into curated memory. Each stage feeds the next; nothing
+skips the approval gate on the way up.
 
-- **Skill proposals** — after you solve a hard multi-step problem, it
-  searches the journal for whether you've struggled through the same
-  thing before. Solved it twice, with real trial-and-error both times?
-  It proposes packaging the solution as a reusable skill, so the third
-  time is one command.
+**Approval gates memory, not action.** Background processes run freely —
+the session-end hook journals on its own, skills notice things on their
+own. But autonomous work only ever produces *drafts and offers*. The
+moment something would enter a memory file, it stops and asks. That one
+rule is why you can let it run unattended without fearing what it
+"learned" while you weren't looking.
 
-You don't have to wait for those phases to get a taste of the last one:
-the journal is plain markdown, so you can always ask "search my journal —
-which processes have I repeated?" and get the same analysis on demand.
-The limit is coverage: the journal only knows what got logged.
+**Everything saved gets routed to the narrowest home that fits.** A fact
+about you (goes in global memory, loads everywhere) is different from a
+rule for one domain of your work (that domain's lessons file, loads when
+working there) is different from a convention of one project (that
+project's own CLAUDE.md — never this folder). When in doubt, narrower
+wins: a misrouted global fact taxes every future session, a misrouted
+local one costs almost nothing.
+
+**Writes ask, reads guess.** Filing a journal entry under an ambiguous
+project? It asks first — misfiled history is nearly invisible later.
+Answering "where did we leave off?" from an ambiguous folder? It picks
+the most recent journal and says which one it read — a wrong guess there
+costs one answer, and disclosure lets you redirect it.
+
+**Memory is curated, not accumulated.** The boot files have hard size
+caps (about half a page each), so every session starts cheap. The
+journal can grow; the stuff loaded every time cannot. The gardener
+exists to enforce exactly this — promote what earned its place, prune
+what went stale.
+
+**Structure over instructions.** The project's recurring lesson: rules
+that live only as written instructions eventually get skipped; rules
+built into the machinery don't. So "commit after memory writes" became a
+hook that commits automatically, and formatting rules that broke in
+practice got replaced by checks that tolerate real-world writing. Where
+you see an odd design detail, there's usually a story like that behind
+it (ROADMAP.md's build notes record them).
+
+**One folder, plain markdown, git underneath.** Your entire memory is
+human-readable files in this one folder — inspectable, editable,
+versioned, portable. `~/.claude/` holds only a pointer and symlinks.
+Uninstalling is deleting a text block and some symlinks; nothing is
+hidden anywhere else.
+
+The one piece still to come: a scheduled version of consolidation that
+drafts its proposals in the background (like session journaling already
+does). Until then the gardener runs when you ask, and boot reminds you
+weekly.
 
 ## What's in here
 
@@ -145,10 +215,11 @@ The limit is coverage: the journal only knows what got logged.
 | `USER.md`, `memory/MEMORY.md` | Your user model and global memory (filled by setup) |
 | `memory/journal/<domain>/` | Per-domain `sessions/` (dated logs) + `lessons/` (key rules) + `skills/` (that domain's own skills) |
 | `memory/proposals/` | Approval inbox for auto-drafted journal entries |
+| `memory/consolidation-log.md` | One dated entry per gardener run; boot checks it to remind you weekly |
 | `INSTALL.md` | Pointer install + optional hook/skill installs — the only steps that edit outside this folder |
 | `SETUP.md` | First-run interview; deletes itself when done |
-| `ROADMAP.md` | Phase plan (Phases 0–3 are live) |
-| `install/` | The session-end hook script, settings template, and `general_skills/` (skills useful everywhere, e.g. lesson-capture) |
+| `ROADMAP.md` | Phase plan with build notes (all phases live; consolidation's scheduled mode still to come) |
+| `install/` | The session-end hook script, settings template, and `general_skills/` (the three skills useful everywhere: lesson-capture, skill-forge, memory-gardener) |
 
 Domain skills activate per project: symlink one from
 `memory/journal/<domain>/skills/` into that project's `.claude/skills/`
