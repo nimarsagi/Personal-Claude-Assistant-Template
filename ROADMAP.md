@@ -1,7 +1,7 @@
 # Roadmap
 
 The full plan for My Claude Assistant, so each phase is designed with the
-end-state in mind. Phases 0–3 are built/live today.
+end-state in mind. Phases 0–4 are built/live today.
 
 ## Phase 0–1 (built)
 Scaffold + boot protocol + first-run setup. Memory files load in every
@@ -61,7 +61,7 @@ Build notes, where reality amended the original sketch:
   architecture below (this build renamed install/skills/ to
   install/general_skills/ and added memory/journal/<domain>/skills/).
 
-## Phase 4 — skill-forge skill
+## Phase 4 — skill-forge skill (built 2026-07-13)
 After solving a novel multi-step problem, proposes a new SKILL.md
 (agentskills.io-compatible). Bar: recurring problem + real
 trial-and-error. Detection leans on Phase 2's journal, so this phase
@@ -70,6 +70,25 @@ session (several failed attempts before a working fix); recurring is
 checked by searching the journal for a similar problem solved before. A
 first occurrence, however hard-won, doesn't trigger a proposal — it takes
 a second one to confirm the pattern is real rather than a one-off.
+Build notes, where reality amended the original sketch:
+- Same thin-skill structure as Phase 3: SKILL.md
+  (install/general_skills/skill-forge/) owns only the NOTICING; the
+  whole procedure lives in CLAUDE.md's "Skill forge" section, so the
+  rules can't drift apart.
+- An EXPLICIT request ("make this a skill") bypasses the bar entirely —
+  the same precedent as lesson-capture's "remember this" always firing.
+  The recurrence + trial-and-error bar gates unprompted noticing only.
+- The recurrence check needed an exception to the boot protocol's
+  "never read across all project folders": it keyword-greps ALL of
+  memory/journal/*/sessions/ but reads only the matching entries.
+  Documented in CLAUDE.md as the one sanctioned, scoped exception —
+  the grep is cheap and blind; full reads stay narrow.
+- Drafted skills must include the FAILED approaches as explicit don'ts,
+  not just the working procedure — preserving the dead ends is the
+  value the trial-and-error paid for.
+- Like every phase: unprompted noticing can't be verified on demand
+  (same situation as the lesson-capture skill) — it waits for a real
+  session that re-solves a journaled problem the hard way.
 
 ## Phase 5 — consolidation
 Periodic gardener-style audit merges journal themes into MEMORY.md,

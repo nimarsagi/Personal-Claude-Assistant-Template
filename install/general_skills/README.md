@@ -1,0 +1,1 @@
+Source of truth for GENERAL skills (useful in every kind of work); symlinked into ~/.claude/skills/ per INSTALL.md's skill-install section — a skill living only here is not yet live. Domain-specific skills live in memory/journal/<domain>/skills/ instead, symlinked per project.

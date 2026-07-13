@@ -112,12 +112,16 @@ bare macOS — `xcode-select --install` provides it). To uninstall, remove
 the SessionEnd entry from ~/.claude/settings.json (same gates: backup,
 show, validate).
 
-## Skill install — Phase 3 lesson capture (optional, run once)
+## Skill install — general skills (optional, run once per skill)
 
 Run this only when the user asks for it (e.g. "install the lesson-capture
-skill"), after the pointer install is done. It makes the skill at
-`install/general_skills/lesson-capture/` ambient — loaded in every
-session, any folder — by symlinking it into ~/.claude/skills/, where
+skill" / "install the skill-forge skill"), after the pointer install is
+done. Two general skills ship today: `lesson-capture` (Phase 3) and
+`skill-forge` (Phase 4), both in `install/general_skills/`. The steps
+below are written for lesson-capture; for any other general skill,
+substitute its folder name throughout. Installing makes the skill
+ambient — loaded in every session, any folder — by symlinking it into
+~/.claude/skills/, where
 Claude Code loads user-level skills from (symlinked skill folders are
 officially supported). No file is edited, so no backup is needed; the
 gates are a collision check and the same show-and-confirm discipline:

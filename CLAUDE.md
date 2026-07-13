@@ -38,9 +38,11 @@ user in one line instead of silently repeating the stale version.
   session-end hook, awaiting the user's approval; existence checked at
   boot, contents read only on review (see "Reviewing proposals").
 - `ROADMAP.md` — phase plan; read only when phase status or design intent
-  is in question. Phases 0–3 are live: journaling happens both manually
+  is in question. Phases 0–4 are live: journaling happens both manually
   and via the background hook; lesson capture is manual AND skill-noticed
-  once the lesson-capture skill is installed (see "Lesson capture").
+  once the lesson-capture skill is installed (see "Lesson capture");
+  hard-won solutions become reusable skills manually AND skill-noticed
+  once the skill-forge skill is installed (see "Skill forge").
 - `INSTALL.md` / `SETUP.md` / `install/` — install-time only; each
   explains itself. SETUP.md deletes itself when first-run setup is done.
 
@@ -165,6 +167,46 @@ duplicate. Show the exact proposed text and destination; write only on
 an explicit yes covering both. After an approved GLOBAL or DOMAIN write
 lands in this folder, git commit it here (LOCAL writes belong to that
 project's own version control, not this folder's).
+
+## Skill forge
+Two triggers, same procedure. User-triggered: "make this a skill" /
+"turn this into a skill" — always proceeds. Skill-noticed (once the
+Phase 4 skill-forge skill is installed): a problem in this session was
+solved only after several genuinely failed attempts, AND the recurrence
+check below finds a similar problem solved before. Unprompted proposals
+require both; a first occurrence, however hard-won, doesn't qualify.
+Finish the current action first, then offer in one line; one offer per
+solution.
+- **Recurrence check**: keyword-grep across ALL of
+  memory/journal/*/sessions/ for the problem's distinctive terms, then
+  read ONLY the entries that match. This scoped search is the one
+  sanctioned exception to "never read across all project folders" —
+  the grep is cheap and blind; full reads stay narrow. Report in one
+  line what the check found (or didn't).
+- **Extend before create**: check BOTH skill homes —
+  install/general_skills/ and memory/journal/*/skills/ — for an
+  existing skill whose purpose covers this solution; prefer proposing
+  an amendment to it. A new skill requires a problem that fits no
+  existing skill's purpose.
+- **Draft**: an agentskills.io-compatible SKILL.md — YAML frontmatter
+  with a kebab-case `name` and a `description` written as trigger
+  language (the situations that should load it); body = the procedure
+  distilled from what actually worked, INCLUDING the failed approaches
+  as explicit don'ts — that's the value the trial-and-error bought.
+  Plain language, self-contained: a reader who wasn't in the session
+  must be able to follow it (same test as lessons).
+- **Route it** (narrowest tier that fits, mirroring lesson routing):
+  specific to one domain of the user's work →
+  memory/journal/<domain>/skills/<name>/SKILL.md, using the canonical
+  names from MEMORY.md's "Journal domains:" line; genuinely general →
+  install/general_skills/<name>/SKILL.md.
+- **Approval gate**: show the full SKILL.md text AND the destination;
+  write only on an explicit yes covering both. After writing, git
+  commit in this folder.
+- **Activation**: a skill in its home folder is not yet live — offer
+  the exact symlink command per "Managing skills" below (general →
+  ~/.claude/skills/, domain → that project's .claude/skills/) and get
+  a yes before creating it.
 
 ## Managing skills
 Skills have two homes, and where a skill is SYMLINKED — not where it
