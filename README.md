@@ -110,8 +110,11 @@ top of `CLAUDE.md`).
 
 ## What it does on its own
 
-Beyond those commands, every session quietly does a few things without
-being asked:
+Some of this comes with the base install and some only switches on after
+you've done the optional installs (steps 4–5). Either way, none of it
+writes to your memory without your yes.
+
+**From the base install — every session, no setup beyond step 2:**
 
 - **Loads who you are at boot** — your user model and global memory are
   read at the start of every session, so you never have to re-introduce
@@ -122,32 +125,32 @@ being asked:
 - **Backs memory up as it goes** — every memory write is followed by a
   git commit, so your history is versioned and one accidental deletion
   can't erase it.
+- **Reminds you to tidy up** — if the last consolidation run is more
+  than a week old, the next session mentions it in one line. Mentions
+  only; the tidy-up itself never runs without you asking.
 - **Defends its own boundaries** — a copy of this folder that isn't the
   installed one refuses to run setup or write memory; stale notes from
   Claude's other, built-in memory don't override what's recorded here;
   and nothing is ever written into your memory files without your
   explicit yes.
-- **Journals your sessions in the background** (once the hook from
-  install step 4 is on) — when any session ends, a detached helper reads
-  the transcript, drafts a journal entry, and drops it into a proposals
-  inbox announced at your next session start. Drafts only: nothing enters
-  real memory until you approve it. The same helper commits any
-  unsaved memory changes, so the "backs memory up" promise above stops
-  depending on anyone remembering.
-- **Notices corrections worth keeping** (once the skill from install
-  step 5 is on) — when you correct Claude in a way that implies a
-  standing rule, it offers to save the lesson, with a suggested home
-  (global memory, a domain's lessons file, or that project's own
-  CLAUDE.md). One-off fixes are left alone; nothing is saved without
-  your yes.
-- **Notices solutions worth keeping** (skill-forge, same install step) —
-  when something got fixed only after several failed attempts AND the
-  journal shows you've hit the same problem before, it offers to package
-  the solution as a skill. A hard task done right first try, or a
-  first-ever occurrence, stays quiet — the bar is a proven repeat.
-- **Reminds you to tidy up** — if the last consolidation run is more
-  than a week old, the next session mentions it in one line. Mentions
-  only; the tidy-up itself never runs without you asking.
+
+**Once you've installed the optional pieces** (the hook in step 4, the
+skills in step 5) — these run in the background but only ever produce
+drafts and offers, never a saved change:
+
+- **Journals your sessions** (hook) — when any session ends, a detached
+  helper reads the transcript, drafts a journal entry, and drops it into
+  a proposals inbox announced at your next session start. The same helper
+  commits any unsaved memory changes, so the "backs memory up" promise
+  above stops depending on anyone remembering.
+- **Notices corrections worth keeping** (lesson-capture skill) — when you
+  correct Claude in a way that implies a standing rule, it offers to save
+  the lesson, with a suggested home. One-off fixes are left alone.
+- **Notices solutions worth keeping** (skill-forge skill) — when
+  something got fixed only after several failed attempts AND the journal
+  shows you've hit the same problem before, it offers to package the
+  solution as a skill. A hard task done right first try, or a first-ever
+  occurrence, stays quiet — the bar is a proven repeat.
 
 ## The nuances — how it's designed
 
