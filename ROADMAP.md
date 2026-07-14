@@ -126,6 +126,22 @@ Build notes, where reality amended the original sketch:
   a consolidation PROPOSAL into memory/proposals/ for review at next
   boot; it never writes final memory, keeping the approval gate intact.
 
+## Post-Phase-5 hardening — boot injection (built 2026-07-14)
+Observed failure: a session opened with a concrete task skipped the
+pointer instruction in ~/.claude/CLAUDE.md and never read this folder's
+boot files — the project's own context was pushed in automatically,
+while the assistant's arrived only as an instruction to go read files,
+and lost the race. Fix, per the standing structure-over-instructions
+principle: `install/hooks/session-start.sh` (wired into Claude Code's
+SessionStart event by INSTALL.md's hook section) PRINTS the boot
+context — USER.md, MEMORY.md, setup/proposals/consolidation status —
+into every new session's opening context, where Claude Code adds hook
+stdout as data. Boot knowledge stops depending on obedience; the
+boot sequence's action steps (d, f) still ride on instructions, but
+the facts they act on arrive precomputed by the shell. The hook is
+read-only, model-free, and guarded like session-end.sh (live-install
+pointer check, helper-session marker).
+
 ## Skills architecture (applies to Phase 3–4)
 Skills follow the same source-vs-install split as memory, with TWO
 git-tracked homes in this folder — and activation matches the home:

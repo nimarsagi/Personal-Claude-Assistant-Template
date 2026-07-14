@@ -1,5 +1,5 @@
 {
-  "_comment": "Phase 2 SessionEnd hook. Merge the 'hooks' key below into ~/.claude/settings.json via the hook-install section of INSTALL.md, replacing <assistant-path> with this folder's absolute path. This file itself is inert — nothing reads it at runtime.",
+  "_comment": "Hooks: SessionEnd (Phase 2 background journaling) + SessionStart (boot-context injection, post-Phase-5 hardening). Merge the 'hooks' key below into ~/.claude/settings.json via the hook-install section of INSTALL.md, replacing <assistant-path> with this folder's absolute path. The command strings' embedded double quotes are intentional and must be kept — each hook command runs through a shell, and an unquoted path containing spaces (e.g. a folder under 'VSCODE MAIN') would otherwise be split into multiple arguments. This file itself is inert — nothing reads it at runtime.",
   "hooks": {
     "SessionEnd": [
       {
@@ -7,8 +7,20 @@
         "hooks": [
           {
             "type": "command",
-            "command": "<assistant-path>/install/hooks/session-end.sh",
+            "command": "\"<assistant-path>/install/hooks/session-end.sh\"",
             "timeout": 180
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"<assistant-path>/install/hooks/session-start.sh\"",
+            "timeout": 30
           }
         ]
       }

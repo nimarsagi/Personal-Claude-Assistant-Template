@@ -54,12 +54,18 @@ it must stay private:
    and runs the first-run interview (role, preferences, projects, goals),
    then SETUP.md deletes itself. That's it.
 
-4. Optional, any time later: say **"install the session-end hook"** to
-   turn on automatic background journaling — every session gets drafted
-   into your approval inbox when it ends, so forgetting to say "log this
-   session" no longer loses it. This is the only step that edits
-   `~/.claude/settings.json`, and it runs behind the same
-   backup-show-confirm gate as step 2 (see INSTALL.md).
+4. Optional, any time later: say **"install the hooks"** (or name just
+   one) to turn on the two background helpers:
+   - the **session-end hook** — automatic journaling: every session gets
+     drafted into your approval inbox when it ends, so forgetting to say
+     "log this session" no longer loses it.
+   - the **session-start hook** — guaranteed boot: your user model and
+     memory are pushed directly into every new session's context.
+     Without it, loading depends on Claude following the pointer
+     instruction, which a task-heavy first message can outrace.
+   This is the only step that edits `~/.claude/settings.json`, and it
+   runs behind the same backup-show-confirm gate as step 2 (see
+   INSTALL.md).
 
 5. Optional, any time later: three skills, each installed by asking and
    each just one symlink in `~/.claude/skills/` (see INSTALL.md):
@@ -118,7 +124,10 @@ writes to your memory without your yes.
 
 - **Loads who you are at boot** — your user model and global memory are
   read at the start of every session, so you never have to re-introduce
-  yourself or restate standing preferences.
+  yourself or restate standing preferences. (With just the base install
+  this relies on Claude following the pointer instruction, which a
+  task-heavy first message can occasionally outrace — the session-start
+  hook from step 4 closes that gap by pushing the files in directly.)
 - **Notices when something's off** — if setup never actually finished, or
   a journal entry looks like it was filed under the wrong project, it says
   so in one line instead of silently working from bad state.
@@ -134,11 +143,15 @@ writes to your memory without your yes.
   and nothing is ever written into your memory files without your
   explicit yes.
 
-**Once you've installed the optional pieces** (the hook in step 4, the
+**Once you've installed the optional pieces** (the hooks in step 4, the
 skills in step 5) — these run in the background but only ever produce
 drafts and offers, never a saved change:
 
-- **Journals your sessions** (hook) — when any session ends, a detached
+- **Boots bulletproof** (session-start hook) — who you are, your memory,
+  and anything awaiting your attention (pending proposals, an overdue
+  tidy-up) arrive pre-loaded in the session's opening context, computed
+  by a small script rather than depending on Claude remembering to look.
+- **Journals your sessions** (session-end hook) — when any session ends, a detached
   helper reads the transcript, drafts a journal entry, and drops it into
   a proposals inbox announced at your next session start. The same helper
   commits any unsaved memory changes, so the "backs memory up" promise

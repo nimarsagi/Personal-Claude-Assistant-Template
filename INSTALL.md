@@ -75,42 +75,56 @@ needed if the user ever moves or renames the folder.
 - Never run automatically / unattended. This is the one step in the whole
   scaffold most worth a human in the loop for, every single time.
 
-## Hook install — Phase 2 background journaling (optional, run once)
+## Hook install — the two hooks (optional, run once; each installable alone)
 
-Run this only when the user asks for it (e.g. "install the session-end
-hook"), and only after the pointer install above is done and first-run
-setup has completed. It wires `install/hooks/session-end.sh` into
-Claude Code's SessionEnd event: after every session, anywhere, the script
-auto-commits this folder and drafts a journal-entry proposal into
-memory/proposals/ (see ROADMAP.md Phase 2). It edits
-~/.claude/settings.json — a machine-readable control file where one
-malformed comma makes Claude Code ignore the ENTIRE file — so it gets the
-same gates as the pointer install:
+Run this only when the user asks for it (e.g. "install the hooks",
+"install the session-end hook", "install the session-start hook"), and
+only after the pointer install above is done and first-run setup has
+completed. There are two hooks, and the user may install either or both:
 
-1. **Idempotency check.** Read ~/.claude/settings.json. If any SessionEnd
-   hook already points at a session-end.sh, STOP and ask the user — do
-   not add a second one.
+- `install/hooks/session-end.sh` → Claude Code's SessionEnd event: after
+  every session, anywhere, it auto-commits this folder and drafts a
+  journal-entry proposal into memory/proposals/ (ROADMAP.md Phase 2).
+- `install/hooks/session-start.sh` → the SessionStart event: at every
+  session start it prints this folder's boot context (user model, global
+  memory, boot status) into the session's opening context, so memory
+  arrives as pushed data instead of an instruction Claude might skip
+  when the first message is a task (ROADMAP.md, post-Phase-5 hardening).
+
+Both edits touch ~/.claude/settings.json — a machine-readable control
+file where one malformed comma makes Claude Code ignore the ENTIRE
+file — so they get the same gates as the pointer install:
+
+1. **Idempotency check.** Read ~/.claude/settings.json. For each hook
+   being installed: if any SessionEnd hook already points at a
+   session-end.sh, or any SessionStart hook at a session-start.sh, STOP
+   and ask the user — do not add a second one. Install only the missing
+   entries.
 2. **Backup both files** (~/.claude/CLAUDE.md and ~/.claude/settings.json)
    to ~/.claude/backup-<YYYY-MM-DD-HHMM>/, exactly as in step 2 above.
 3. **Show the exact resulting JSON and wait for an explicit yes.** Take
-   the `hooks` key from install/settings.template.json, replace
-   `<assistant-path>` with this folder's absolute path, and merge it into
-   the current file's content. If the file already has a `hooks` key,
-   merge the SessionEnd entry into it — never drop, rewrite, or reorder
-   anything already in the file. If settings.json doesn't exist, the new
-   file is just `{ "hooks": ... }`.
+   the entries being installed from install/settings.template.json's
+   `hooks` key, replace `<assistant-path>` with this folder's absolute
+   path, and merge them into the current file's content. If the file
+   already has a `hooks` key, merge the new event entries into it —
+   never drop, rewrite, or reorder anything already in the file. If
+   settings.json doesn't exist, the new file is just `{ "hooks": ... }`.
+   Keep each command string's embedded double quotes around the path
+   (`"\"<assistant-path>/install/hooks/session-end.sh\""`) — the hook
+   runs through a shell, and a path containing spaces would otherwise be
+   split into multiple arguments and fail to execute.
 4. **Write, then validate.** After writing, parse the file
    (`python3 -m json.tool ~/.claude/settings.json`). If parsing fails,
    restore the backup immediately and say so.
-5. **Make the script executable** (`chmod +x install/hooks/session-end.sh`
-   in this folder) and confirm in one line what changed. The hook takes
+5. **Make the script(s) executable** (`chmod +x install/hooks/*.sh`
+   in this folder) and confirm in one line what changed. The hooks take
    effect for sessions started from now on.
 
 Requirements: bash, python3, git, and the `claude` CLI on PATH (all
 already present on a machine running Claude Code, except python3 on a
-bare macOS — `xcode-select --install` provides it). To uninstall, remove
-the SessionEnd entry from ~/.claude/settings.json (same gates: backup,
-show, validate).
+bare macOS — `xcode-select --install` provides it; session-start.sh
+needs only bash + standard tools). To uninstall either hook, remove its
+entry from ~/.claude/settings.json (same gates: backup, show, validate).
 
 ## Skill install — general skills (optional, run once per skill)
 
