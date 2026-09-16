@@ -75,12 +75,13 @@ needed if the user ever moves or renames the folder.
 - Never run automatically / unattended. This is the one step in the whole
   scaffold most worth a human in the loop for, every single time.
 
-## Hook install — the two hooks (optional, run once; each installable alone)
+## Hook install — the three hooks (optional, run once; each installable alone)
 
 Run this only when the user asks for it (e.g. "install the hooks",
-"install the session-end hook", "install the session-start hook"), and
-only after the pointer install above is done and first-run setup has
-completed. There are two hooks, and the user may install either or both:
+"install the session-end hook", "install the session-start hook",
+"install the standing-rules hook"), and only after the pointer install
+above is done and first-run setup has completed. There are three hooks,
+and the user may install any subset:
 
 - `install/hooks/session-end.sh` → Claude Code's SessionEnd event: after
   every session, anywhere, it auto-commits this folder and drafts a
@@ -90,16 +91,23 @@ completed. There are two hooks, and the user may install either or both:
   memory, boot status) into the session's opening context, so memory
   arrives as pushed data instead of an instruction Claude might skip
   when the first message is a task (ROADMAP.md, post-Phase-5 hardening).
+- `install/hooks/standing-rules.sh` → the UserPromptSubmit event: on
+  every prompt it re-states the user's hard guardrails — the preferences
+  SETUP.md tagged `[hard guardrail]` — in one sentence, so they are in
+  front of Claude while it writes, not just at session start. It reads
+  that sentence from `install/hooks/standing-rules.txt` and injects
+  nothing while that file is still empty, so installing it before setup
+  is harmless but pointless.
 
-Both edits touch ~/.claude/settings.json — a machine-readable control
+All three edits touch ~/.claude/settings.json — a machine-readable control
 file where one malformed comma makes Claude Code ignore the ENTIRE
 file — so they get the same gates as the pointer install:
 
 1. **Idempotency check.** Read ~/.claude/settings.json. For each hook
    being installed: if any SessionEnd hook already points at a
-   session-end.sh, or any SessionStart hook at a session-start.sh, STOP
-   and ask the user — do not add a second one. Install only the missing
-   entries.
+   session-end.sh, any SessionStart hook at a session-start.sh, or any
+   UserPromptSubmit hook at a standing-rules.sh, STOP and ask the user —
+   do not add a second one. Install only the missing entries.
 2. **Backup both files** (~/.claude/CLAUDE.md and ~/.claude/settings.json)
    to ~/.claude/backup-<YYYY-MM-DD-HHMM>/, exactly as in step 2 above.
 3. **Show the exact resulting JSON and wait for an explicit yes.** Take
@@ -122,9 +130,10 @@ file — so they get the same gates as the pointer install:
 
 Requirements: bash, python3, git, and the `claude` CLI on PATH (all
 already present on a machine running Claude Code, except python3 on a
-bare macOS — `xcode-select --install` provides it; session-start.sh
-needs only bash + standard tools). To uninstall either hook, remove its
-entry from ~/.claude/settings.json (same gates: backup, show, validate).
+bare macOS — `xcode-select --install` provides it; session-start.sh and
+standing-rules.sh need only bash + standard tools). To uninstall any
+hook, remove its entry from ~/.claude/settings.json (same gates: backup,
+show, validate).
 
 ## Skill install — general skills (optional, run once per skill)
 

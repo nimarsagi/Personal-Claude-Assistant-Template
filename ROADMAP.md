@@ -1,8 +1,9 @@
 # Roadmap
 
 The full plan for My Claude Assistant, so each phase is designed with the
-end-state in mind. Phases 0–5 are built/live today (Phase 5 in its
-manual mode; its scheduled headless run is still deferred).
+end-state in mind. Phases 0–5 and the post-Phase-5 hardening are live
+today (Phase 5 in its manual mode; its scheduled headless run is still
+deferred).
 
 ## Phase 0–1 (built)
 Scaffold + boot protocol + first-run setup. Memory files load in every
@@ -19,7 +20,8 @@ detached worker at every session end that reads the session transcript
 and, via a cheap headless Claude run, writes a journal-entry draft plus
 candidate lessons into memory/proposals/ — never directly into MEMORY.md.
 The boot protocol surfaces pending proposals at next session start; the
-"Reviewing proposals" section of CLAUDE.md handles approve/edit/reject.
+"Reviewing proposals" section of reference/journaling.md handles
+approve/edit/reject.
 This is why proposals/ exists in the scaffold. The same hook also commits
 any uncommitted changes in this folder at session end — turning
 Phase 0–1's instruction-based "commit after memory writes" into a
@@ -51,7 +53,7 @@ Build notes, where reality amended the original sketch:
 - Thin skill, single source of truth: SKILL.md
   (install/general_skills/lesson-capture/) owns only the NOTICING —
   when to fire, when to stay quiet — and defers the whole procedure to
-  CLAUDE.md's "Lesson capture" section, so the rules can't drift apart.
+  rules.md's "Lesson capture" section, so the rules can't drift apart.
 - Sensitivity (user-chosen): fire on GENERALIZABLE corrections — ones
   implying a standing rule ("always/never...", same mistake twice) —
   not on one-off fixes. Explicit "remember this" always fires.
@@ -74,7 +76,7 @@ a second one to confirm the pattern is real rather than a one-off.
 Build notes, where reality amended the original sketch:
 - Same thin-skill structure as Phase 3: SKILL.md
   (install/general_skills/skill-forge/) owns only the NOTICING; the
-  whole procedure lives in CLAUDE.md's "Skill forge" section, so the
+  whole procedure lives in rules.md's "Skill forge" section, so the
   rules can't drift apart.
 - An EXPLICIT request ("make this a skill") bypasses the bar entirely —
   the same precedent as lesson-capture's "remember this" always firing.
@@ -82,7 +84,7 @@ Build notes, where reality amended the original sketch:
 - The recurrence check needed an exception to the boot protocol's
   "never read across all project folders": it keyword-greps ALL of
   memory/journal/*/sessions/ but reads only the matching entries.
-  Documented in CLAUDE.md as the one sanctioned, scoped exception —
+  Documented in rules.md as the one sanctioned, scoped exception —
   the grep is cheap and blind; full reads stay narrow.
 - Drafted skills must include the FAILED approaches as explicit don'ts,
   not just the working procedure — preserving the dead ends is the
@@ -98,12 +100,12 @@ a scheduled headless run.
 Build notes, where reality amended the original sketch:
 - Same thin-skill structure as Phases 3–4: SKILL.md
   (install/general_skills/memory-gardener/) owns only the trigger; the
-  whole procedure lives in CLAUDE.md's "Consolidation" section.
+  whole procedure lives in rules.md's "Consolidation" section.
 - Explicit trigger ONLY — no unprompted noticing at all. "Weekly" is
   made real by a boot nudge instead: the gardener appends one dated
   entry to memory/consolidation-log.md after every run (even no-change
-  runs), and boot step (e) mentions — never runs — consolidation when
-  the log's newest dated line is older than 7 days or missing.
+  runs), and boot mentions — never runs — consolidation when the log's
+  newest dated line is older than 7 days or missing.
 - Amended after the first live run (same day): that run wrapped its
   log entry across several lines, leaving the file's LAST physical
   line undated — the same wrapped-line failure that once hid a domain
@@ -113,6 +115,16 @@ Build notes, where reality amended the original sketch:
   boot anchors on the newest line starting with a date. When a rule
   breaks on day one under a well-intentioned writer, fix the
   mechanism, not the writer.
+- Amended again (2026-09-16), for the first-run case: "no dated line"
+  was firing the overdue nudge on a brand-new install, opening a user's
+  first-ever session with a chore that can't be done — no journal
+  entries exist yet, so there is nothing to consolidate. The branch is
+  still needed, because a mangled log is indistinguishable from an
+  unused one by the file alone; it now fires only when some
+  memory/journal/*/sessions/ entry exists. A broken log on a working
+  install still shouts. This is a deliberate divergence from the
+  maintainer's own install, which never saw the bug — its log has had
+  entries since day one.
 - Prune scope is curated files only: MEMORY.md, USER.md, and domain
   LESSONS.md files. Journal sessions and proposals are read-only input,
   per the standing principle against autonomous edits of the historical
@@ -131,16 +143,41 @@ Observed failure: a session opened with a concrete task skipped the
 pointer instruction in ~/.claude/CLAUDE.md and never read this folder's
 boot files — the project's own context was pushed in automatically,
 while the assistant's arrived only as an instruction to go read files,
-and lost the race. Fix, per the standing structure-over-instructions
-principle: `install/hooks/session-start.sh` (wired into Claude Code's
+and lost the race. Fix — the same move as Phase 2's hook-enforced
+commits, replacing an instruction with machinery:
+`install/hooks/session-start.sh` (wired into Claude Code's
 SessionStart event by INSTALL.md's hook section) PRINTS the boot
 context — USER.md, MEMORY.md, setup/proposals/consolidation status —
 into every new session's opening context, where Claude Code adds hook
-stdout as data. Boot knowledge stops depending on obedience; the
-boot sequence's action steps (d, f) still ride on instructions, but
-the facts they act on arrive precomputed by the shell. The hook is
+stdout as data. Boot knowledge stops depending on obedience; the boot
+sequence's own actions — not reading journal files, flagging uncommitted
+changes to steering files — still ride on instructions, but the facts they
+act on arrive precomputed by the shell. The hook is
 read-only, model-free, and guarded like session-end.sh (live-install
 pointer check, helper-session marker).
+
+## Post-Phase-5 hardening — standing-rules reminder (built 2026-09-16)
+Observed failure: a hard guardrail stated once at boot loses to a good
+local reason forty turns later — the rule is in context, just not in
+front of the model at the moment it writes. Same fix again, machinery
+instead of obedience: `install/hooks/standing-rules.sh` (UserPromptSubmit,
+optional, installed like the other two) re-states the user's absolute
+preferences in one sentence on every prompt.
+Build notes:
+- The reminder text lives in `install/hooks/standing-rules.txt`, not in
+  the script. SETUP.md writes it from the preferences the interview
+  tagged `[hard guardrail]`; only the user edits it after that. Keeping
+  text apart from logic means a guardrail containing a quote or a
+  backslash can't break the hook's JSON output, and updating the rule
+  never touches a version-controlled script.
+- The `[hard guardrail]` tag in USER.md is what the hook selects on, so
+  the interview asks for the split explicitly (SETUP.md step 3) rather
+  than letting a later step guess which preferences are absolute.
+- Silent by default: an empty or comments-only text file injects nothing,
+  so the hook is harmless on an unpersonalized install. Guarded like the
+  other two (live-install pointer check, helper-session marker).
+- It MUST stay one sentence. A long reminder on every prompt is wallpaper
+  the model reads past, which is the exact failure it exists to prevent.
 
 ## Skills architecture (applies to Phase 3–4)
 Skills follow the same source-vs-install split as memory, with TWO

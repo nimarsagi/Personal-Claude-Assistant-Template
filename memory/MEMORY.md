@@ -7,7 +7,12 @@ silently.
 
 ## Facts
 <!-- Durable, GLOBAL facts about the user or their world worth recalling
-     in any session. -->
+     in any session. Setup also writes one load-bearing fact here: the
+     canonical list of journal domain names, on a single line. Keep every
+     name on that one physical line however long it runs, and don't
+     reword its label — the session-end hook matches that line to decide
+     where to file a draft, and a name wrapped onto the next line is
+     invisible to it. SETUP.md step 4 has the exact form. -->
 
 ## Feedback
 <!-- Corrections or confirmations about how to approach work, with the

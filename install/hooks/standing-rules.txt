@@ -1,0 +1,10 @@
+# standing-rules.txt — the one-sentence reminder the standing-rules hook
+# puts in front of Claude on every prompt.
+#
+# SETUP.md writes this file from the preferences the user tagged
+# [hard guardrail] in USER.md. After that it is the user's to edit.
+#
+# Lines starting with # are ignored. Everything else is joined into one
+# line, so keep the whole thing to a sentence or two — a long reminder
+# stops being read. Empty (or comments only) means the hook injects
+# nothing, which is the correct state before setup has run.

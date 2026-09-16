@@ -12,7 +12,12 @@ content — SETUP.md fills this in on first run.
 
 ## Standing Preferences
 <!-- Durable likes/dislikes that should shape behavior across all
-     projects (not one-off task instructions). -->
+     projects (not one-off task instructions). End a preference with
+     [hard guardrail] when the user has called it absolute — one that
+     stands even when there's a good reason to bend it. Untagged
+     preferences can lose to a good reason; tagged ones can't. Setup
+     asks which are which; after that only the user adds or removes a
+     tag. -->
 
 ## Recurring Projects / Contexts
 <!-- Named projects or workflows this user returns to, for journal and

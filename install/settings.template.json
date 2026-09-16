@@ -1,5 +1,5 @@
 {
-  "_comment": "Hooks: SessionEnd (Phase 2 background journaling) + SessionStart (boot-context injection, post-Phase-5 hardening). Merge the 'hooks' key below into ~/.claude/settings.json via the hook-install section of INSTALL.md, replacing <assistant-path> with this folder's absolute path. The command strings' embedded double quotes are intentional and must be kept — each hook command runs through a shell, and an unquoted path containing spaces (e.g. a folder under 'VSCODE MAIN') would otherwise be split into multiple arguments. This file itself is inert — nothing reads it at runtime.",
+  "_comment": "Hooks: SessionEnd (Phase 2 background journaling) + SessionStart (boot-context injection, post-Phase-5 hardening) + UserPromptSubmit (standing-rules reminder). Merge the 'hooks' key below into ~/.claude/settings.json via the hook-install section of INSTALL.md, replacing <assistant-path> with this folder's absolute path. The command strings' embedded double quotes are intentional and must be kept — each hook command runs through a shell, and an unquoted path containing spaces (e.g. a folder under 'VSCODE MAIN') would otherwise be split into multiple arguments. The SessionStart matcher lists all four sources on purpose: 'startup' (fresh session) and 'clear' (/clear) alone leave a compacted or resumed session with no boot context, so 'compact' (auto/manual context compaction) and 'resume' (--continue / --resume / /resume) are included too — the injection script is source-agnostic and read-only, so it is safe to re-run on every source. Each of the three is installable alone; the user may want any subset. This file itself is inert — nothing reads it at runtime.",
   "hooks": {
     "SessionEnd": [
       {
@@ -15,12 +15,24 @@
     ],
     "SessionStart": [
       {
-        "matcher": "startup|clear",
+        "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
             "type": "command",
             "command": "\"<assistant-path>/install/hooks/session-start.sh\"",
             "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"<assistant-path>/install/hooks/standing-rules.sh\"",
+            "timeout": 5
           }
         ]
       }

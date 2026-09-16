@@ -33,8 +33,9 @@ one line (e.g. "Want me to save that as a lesson? Draft: ..."). One offer
 per correction; if declined, don't re-offer the same lesson.
 
 ## Procedure
-Follow the "Lesson capture" section of the assistant folder's CLAUDE.md —
-it is the single source of truth for format and routing. In short: distill
+Follow the "Lesson capture" and "Routing" sections of the assistant
+folder's rules.md — they are the single source of truth for format and
+routing. In short: distill
 the correction into three plain-language lines (Rule / When / Why, each
 understandable with no session context), classify it GLOBAL / DOMAIN /
 LOCAL (narrowest tier that fits), check the destination file for an

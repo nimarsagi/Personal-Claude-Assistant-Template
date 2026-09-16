@@ -37,9 +37,9 @@ before — want me to draft a skill for it?"). One offer per solution; if
 declined, don't re-offer the same skill.
 
 ## Procedure
-Follow the "Skill forge" section of the assistant folder's CLAUDE.md —
-it is the single source of truth for the recurrence check, drafting
-format, and routing. In short: keyword-grep all of
+Follow the "Skill forge" section of the assistant folder's rules.md — it
+is the single source of truth for the recurrence check, drafting format,
+and routing. In short: keyword-grep all of
 `memory/journal/*/sessions/` and read only the matching entries (the one
 sanctioned exception to the no-cross-folder-reads rule); check BOTH
 skill homes for an existing skill to extend before creating anything

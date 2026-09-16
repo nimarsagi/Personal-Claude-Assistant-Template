@@ -25,7 +25,7 @@ gardening starts when the user asks for it. If the user responds to the
 overdue mention ("go ahead", "run it"), that counts as asking.
 
 ## Procedure
-Follow the "Consolidation" section of the assistant folder's CLAUDE.md —
+Follow the "Consolidation" section of the assistant folder's rules.md —
 it is the single source of truth. In short: if proposals are pending,
 recommend "review proposals" first; read the curated files, every
 domain's LESSONS.md, and journal sessions across all domains since the
@@ -33,7 +33,7 @@ last consolidation-log entry (this audit is the explicitly-requested
 case where cross-folder journal reads are allowed); report themes to
 promote (routed GLOBAL / DOMAIN / LOCAL), stale rules to prune,
 duplicates to merge, misrouted content, and cap pressure (MEMORY.md and
-USER.md must end at 40 lines or fewer); propose the result as per-file
+USER.md must end at 60 lines or fewer); propose the result as per-file
 before/after diffs; write each file ONLY on an explicit yes for that
 file; commit, then append one date-first entry (wrapping fine) to
 memory/consolidation-log.md and commit that too — even on a no-changes
@@ -44,5 +44,5 @@ run, so the overdue nudge resets.
   record and the review queue are read-only input here.
 - Write any curated file without the user's explicit yes to that file's
   exact diff.
-- Propose edits that leave MEMORY.md or USER.md over their 40-line cap.
+- Propose edits that leave MEMORY.md or USER.md over their 60-line cap.
 - Delete or rewrite consolidation-log.md history — append only.

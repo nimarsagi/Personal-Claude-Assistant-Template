@@ -17,10 +17,10 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    in one line and move on — never guess or invent impressions to fill
    this step.
 3. Interview to filter — MANDATORY, no exception. Ask what matters for
-   this workflow to remember as a baseline (role, standing preferences /
-   hard guardrails, recurring projects, working style, communication
-   defaults, goals). Run this step even if steps 1–2 found nothing — the
-   interview alone is a sufficient floor.
+   this workflow to remember as a baseline (role, standing preferences,
+   recurring projects, working style, communication defaults, goals).
+   Run this step even if steps 1–2 found nothing — the interview alone is
+   a sufficient floor.
    ANTI-PATTERN — do not do this: the user hands over rich material (a
    pasted profile, an imported memory file, a detailed description) and
    you skip the interview because "it already answers everything." It
@@ -31,29 +31,59 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    it left uncovered (typically hard don'ts, communication defaults,
    and what to call the user). "Skip" from the user on any question is
    a valid answer; skipping the questions yourself is not.
+   THEN, once the preference list exists, ask one more question — read
+   the list back and ask which of them are absolute: the ones never to
+   trade away, even when there's a good reason to. "None" is a valid
+   answer. This split is what step 4 tags and step 5 puts in front of
+   Claude on every prompt; without it every preference carries equal
+   weight and the first plausible argument wins.
 4. Show the confirmed entries for USER.md and memory/MEMORY.md and get an
-   explicit yes before writing. Keep each file to max 40 lines,
+   explicit yes before writing. Keep each file to max 60 lines,
    purpose-not-inventory — facts and conventions, not example content.
+   Put `[hard guardrail]` at the end of each preference the user named as
+   absolute in step 3, and on no others — a tag the user didn't ask for
+   is a rule they never agreed to.
    As part of the same confirmation, distill the recurring-projects
    answer into a short canonical list of journal DOMAINS (kebab-case
-   folder names, typically 3–6). On the user's yes: add one line to
-   memory/MEMORY.md — `Journal domains: <a>, <b>, <c>` — and create
-   memory/journal/<domain>/sessions/, .../lessons/, and .../skills/
-   for each (each holding an empty .gitkeep so git keeps the folders):
-   sessions/ receives the dated entries, lessons/ the domain's key rules,
-   skills/ the domain's own skills (see CLAUDE.md "Managing skills").
-   These names anchor journal routing and domain lessons from day one
-   (see CLAUDE.md); without them every session invents its own folder
-   names and the journal fragments.
-5. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
+   folder names, typically 3–6). On the user's yes:
+   - Add one line to memory/MEMORY.md — `Journal domains: <a>, <b>, <c>`.
+     Keep every name on that ONE physical line, however long it runs. The
+     session-end hook greps for this exact line to steer where it files a
+     draft; a name wrapped onto the next line is invisible to it.
+   - For each domain, create `memory/journal/<domain>/` holding
+     `sessions/`, `lessons/` and `skills/` (each with an empty `.gitkeep`
+     so git keeps the folder), plus a `parked-for-later.md` copied from
+     the one at this folder's root with its title changed to
+     `# Parked for Later — <domain>` and the last sentence about
+     domain-specific items dropped.
+   sessions/ receives the dated entries, lessons/ the domain's key rules
+   (its LESSONS.md appears on the first lesson), skills/ the domain's own
+   skills (see rules.md "Managing skills"), parked-for-later.md the work
+   deliberately deferred there.
+   These names anchor journal filing and domain lessons from day one;
+   without them every session invents its own folder names and the
+   journal fragments.
+5. Write the standing-rules reminder. From the preferences tagged
+   `[hard guardrail]` in step 4, draft ONE sentence — two at the very
+   most — that a future Claude should read right before it answers.
+   Show it, get a yes, then write it into
+   `install/hooks/standing-rules.txt` below that file's comment lines.
+   Keep it short: a long reminder gets read past, which is the whole
+   failure mode this guards against. If the user named no absolute
+   preferences, leave the file as comments only and say in one line that
+   the standing-rules hook will stay silent until they add something.
+   The hook itself is installed separately and optionally (INSTALL.md) —
+   writing this file doesn't install anything.
+6. Delete this file (SETUP.md) — the whole file, nothing else. Deleting
    it asserts that ALL steps above ran, including the step-3 interview;
    if the interview did not happen, setup is not done and this file must
    stay. Before deleting, verify each step in one line to the user
-   (1: import checked, 2: known context surfaced, 3: interview held,
-   4: entries approved and written).
-6. Git commit the result in this folder — the populated USER.md and
-   memory/MEMORY.md, the domain folders, plus this file's deletion, one
-   commit. That commit is
+   (1: import checked, 2: known context surfaced, 3: interview held
+   including the absolute-preferences question, 4: entries approved and
+   written, 5: standing-rules text written or deliberately left empty).
+7. Git commit the result in this folder — the populated USER.md and
+   memory/MEMORY.md, the domain folders, standing-rules.txt, plus this
+   file's deletion, one commit. That commit is
    the baseline snapshot of the user's memory; without it the personalized
    files sit uncommitted, with no history and no recovery. If git refuses
    because no identity is configured (fresh machine: user.name/user.email
@@ -61,5 +91,5 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    and `git config user.email "<email>"` (values from the user; repo-local
    is fine) — then commit. Don't skip the commit over this.
 
-If setup is interrupted before step 5, this file still exists and will
+If setup is interrupted before step 6, this file still exists and will
 correctly re-run at the next session boot.
