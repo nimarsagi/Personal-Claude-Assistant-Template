@@ -1,20 +1,29 @@
 # personal-claude-assistant-template
 
-**My Claude Assistant** gives Claude Code a memory. Normally every session
-starts from zero — it doesn't remember who you are, how you work, or what
-happened last time. Set this up once (it asks you a few questions about
-yourself) and every future session, in any folder, boots already knowing
-your standing context. It also learns: corrections become standing rules,
-hard-won solutions become reusable skills, and a weekly tidy-up keeps
-memory sharp instead of letting it silt up.
+**My Claude Assistant** is a memory for Claude Code that you approve,
+prune, and carry between projects.
 
-Nothing enters your memory without your explicit yes. Background work runs
-freely but only ever produces drafts and offers — the moment something
-would enter a memory file, it stops and asks. That's why you can let it run
-unattended without fearing what it "learned" while you weren't looking.
+Claude Code already keeps notes of its own, under
+`~/.claude/projects/<folder>/memory/`. Those are keyed to the directory you
+opened — start the same project one folder deeper and it's a different
+memory — they get written without asking you, and they accumulate with no
+pass that clears out what has gone stale.
 
-Your whole memory is plain markdown in one folder — inspectable, editable,
-versioned, portable — and `~/.claude/` holds only a pointer and symlinks.
+This is the other kind, and it differs on exactly those points. It loads in
+every session in every folder, so what Claude knows about you doesn't depend
+on where you started it. Nothing enters it without your explicit yes:
+background work runs freely but only ever produces drafts and offers, and
+the moment something would be written it stops and asks. What does get in is
+filed to the narrowest home that fits — a fact about you, a rule for one
+area of your work, a convention belonging to one project — and a weekly pass
+proposes what to prune, merge, or promote, because the files that load at
+boot have hard size caps. The whole thing is a git repo you own, so every
+change to your own memory has a diff and a way back. Where the two
+disagree about something, this one wins and says so.
+
+It also learns rather than just recording. A correction becomes a standing
+rule; a problem you've now solved the hard way twice becomes a skill.
+
 This file is for you, the human. Everything else here is addressed to Claude.
 
 ## Install
@@ -69,19 +78,16 @@ package a solution you've now reached the hard way twice, and
 
 ## Daily use
 
-Each of these writes only on your explicit yes. **"log this session"**
-appends outcomes, decisions and open loops to the journal, and **"where did
-we leave off?"** reads them back. **"remember this"** captures a lesson and
-proposes the narrowest home that fits — global memory, one domain's lessons
-file, or that project's own CLAUDE.md. **"review proposals"** walks through
-the auto-drafted entries waiting in your inbox — approve, edit, or reject
-each. **"make this a skill"**
+**"log this session"** appends outcomes, decisions and open loops to the
+journal, and **"where did we leave off?"** reads them back. **"remember
+this"** captures a lesson and names the file it would go in — global
+memory, one area's lessons file, or that project's own CLAUDE.md.
+**"review proposals"** walks through the auto-drafted entries waiting in
+your inbox — approve, edit, or reject each. **"make this a skill"**
 packages what was just done, dead ends included. **"park this for later"**
 saves a non-urgent thing you noticed mid-task instead of derailing what
-you're doing. **"consolidate memory"** is the weekly tidy-up: it proposes,
-as per-file before/after diffs you approve one by one, which themes to
-promote into standing memory, which stale rules to prune, which
-near-duplicates to merge.
+you're doing. **"consolidate memory"** runs the weekly pass, as per-file
+before/after diffs you approve one at a time.
 
 With lesson-capture installed Claude also tries to notice on its own, but
 not reliably — for anything you want caught for sure, say "always...",
