@@ -24,7 +24,7 @@ disagree about something, this one wins and says so.
 It also learns rather than just recording. A correction becomes a standing
 rule; a problem you've now solved the hard way twice becomes a skill.
 
-This file is for you, the human. Everything else here is addressed to Claude.
+Additionally, the memory is stored locally, so that it becomes easy to switch vendors.  
 
 ## Install
 
