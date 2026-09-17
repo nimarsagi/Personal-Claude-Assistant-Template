@@ -91,6 +91,10 @@ and the user may install any subset:
   memory, boot status) into the session's opening context, so memory
   arrives as pushed data instead of an instruction Claude might skip
   when the first message is a task (ROADMAP.md, post-Phase-5 hardening).
+  It also reads `install/hooks/domain-folders.txt` — a list of which
+  folders belong to which domain — and, when the session opens inside
+  one of them, prints that domain's lesson headings too. That file ships
+  empty, so nothing extra is printed until it has entries.
 - `install/hooks/standing-rules.sh` → the UserPromptSubmit event: on
   every prompt it re-states the user's hard guardrails — the preferences
   SETUP.md tagged `[hard guardrail]` — in one sentence, so they are in

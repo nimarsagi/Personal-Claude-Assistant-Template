@@ -1,0 +1,20 @@
+# domain-folders.txt — which folders on this machine belong to which
+# standing domain.
+#
+# Read by session-start.sh. When a session opens inside one of these
+# folders (or anywhere below it), the HEADINGS of that domain's
+# memory/journal/<domain>/lessons/LESSONS.md are injected into the boot
+# context, so a rule already learned there cannot be missed. The lessons
+# file itself stays an on-demand read.
+#
+# One entry per line: <domain>|<absolute folder>
+# Domain must be a canonical name from MEMORY.md's Journal domains line.
+# Most specific folder first — the first match wins.
+#
+# Empty by design. Nothing is injected while this file has no entries,
+# and the trigger stays what it has always been: Claude noticing it is
+# working in one of the user's domains. Add a line when you know which
+# real folder a domain lives in.
+#
+# Example (delete or replace):
+# content-editor|/Users/you/Projects/content-editor

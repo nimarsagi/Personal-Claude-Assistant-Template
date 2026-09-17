@@ -63,6 +63,13 @@ present, then deletes itself (only itself — never edit CLAUDE.md).
    These names anchor journal filing and domain lessons from day one;
    without them every session invents its own folder names and the
    journal fragments.
+   Then, for any domain where the user can name the actual folder it
+   lives in, add a `<domain>|<absolute folder>` line to
+   `install/hooks/domain-folders.txt`. A domain's lessons only reach a
+   session automatically once its folder is listed there; without a
+   line, a rule already learned in that folder is found only if Claude
+   thinks to go looking. Leave the file as comments where the user has
+   no folder yet, and say so in one line.
 5. Write the standing-rules reminder. From the preferences tagged
    `[hard guardrail]` in step 4, draft ONE sentence — two at the very
    most — that a future Claude should read right before it answers.

@@ -90,7 +90,33 @@ else
   fi
 fi
 
-echo
-echo "Journal files load on demand only — do not read them now."
+# Standing rules for the folder this session opened in. The map is data,
+# not code: <domain>|<absolute folder>, most specific first. Only the rule
+# HEADINGS are injected — enough that a rule already learned here cannot be
+# missed — while the file behind them stays an on-demand read. Ships empty,
+# so this block does nothing until the map has entries.
+MAP="$ASSISTANT_DIR/install/hooks/domain-folders.txt"
+if [ -f "$MAP" ]; then
+  while IFS='|' read -r DOMAIN FOLDER; do
+    case "$DOMAIN" in ''|'#'*) continue ;; esac
+    [ -n "${FOLDER:-}" ] || continue
+    case "$PWD/" in
+      "$FOLDER"/*) ;;
+      *) continue ;;
+    esac
+    LESSONS="$ASSISTANT_DIR/memory/journal/$DOMAIN/lessons/LESSONS.md"
+    [ -f "$LESSONS" ] || continue
+    echo "--- standing rules for this folder ($DOMAIN) ---"
+    echo "One line per rule already learned working here. The Rule / When / Why"
+    echo "behind any of them is in:"
+    echo "$LESSONS"
+    echo "Read it before acting against one of these."
+    grep -E '^## ' "$LESSONS" | sed 's/^## /- /'
+    echo
+    break
+  done < "$MAP"
+fi
+
+echo "Journal sessions load on demand only — do not read them now."
 echo "=== end of injected boot context ==="
 exit 0
