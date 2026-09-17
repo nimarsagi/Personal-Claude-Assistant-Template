@@ -38,9 +38,9 @@ decisions, and open loops to
 ## Reviewing proposals
 
 On "review proposals", or a yes to the boot-time mention of pending ones:
-for each file in `memory/proposals/` (its README isn't one), show the draft
-entry and the journal file it would go to, then ask — approve, edit, or
-reject.
+for each file in `memory/proposals/` (its README isn't one), show enough to
+judge — the gist and the journal file it would go to, full text on request
+— then ask: approve, edit, or reject.
 
 The destination is itself only a suggestion: say in one line why that
 folder fits, and name the plausible alternative if there is one. Approval
@@ -51,6 +51,16 @@ user hasn't confirmed; they can re-route to any folder with a word.
   evaluation with no decision, or blow-by-blow detail. Trim it to real
   developments before presenting it — don't file it as-is just because the
   hook wrote it that way.
+- **Filter by importance; don't file everything.** For each draft, and each
+  candidate lesson inside it, ask what it holds that the files and the git
+  log can't give — a decision and its reason, a reversal, an open loop, a
+  defect nobody fixed. What survives is the entry. Where several drafts
+  cover the same stretch of work, merge them and reject the duplicates.
+  Where nothing survives, drop the whole draft and say why.
+- **Rank before asking.** Present the survivors in order of what breaks if
+  the record or rule is missing, name where you'd cut the list, and let the
+  user move the line. Handing over fourteen drafts and seventeen lessons
+  flat is not a review.
 - **Approve** → append the entry to
   `memory/journal/<project>/sessions/YYYY-MM-DD.md` and delete the proposal
   file. Apply the same scrutiny to the destination as a manual log: if the
